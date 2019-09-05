@@ -13,10 +13,116 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Entities">
+      <UniqueIdentifier>{abb6417c-3c51-4a3a-b810-b8055068554b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\Platforms">
+      <UniqueIdentifier>{dfffa677-46c3-4815-830b-e83cd6001e3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities">
+      <UniqueIdentifier>{96dcd7ac-546c-4cbb-b209-5ccc0bbf331e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Platforms">
+      <UniqueIdentifier>{b47e8627-c239-4a31-a9a4-09665ca3163e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Characters">
+      <UniqueIdentifier>{8614d52b-5509-4b44-9255-5a94a68517a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\Characters">
+      <UniqueIdentifier>{0db8e513-3325-46b6-813b-82c915c68680}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\Platforms\Dynamic">
+      <UniqueIdentifier>{4f76d36d-f1f0-42d3-ab17-277ca4dadc1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Platforms\Dynamic">
+      <UniqueIdentifier>{83c6f2f5-0c5d-447a-abb9-67d1d2a48714}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\Utilities">
+      <UniqueIdentifier>{cae973d3-82de-4959-9794-b90531f1db03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities">
+      <UniqueIdentifier>{1d570649-3e47-40be-afbf-a04dab796c9e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StaticPlatform.cpp">
+      <Filter>Source Files\Entities\Platforms</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Entities\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicPlatform.cpp">
+      <Filter>Source Files\Entities\Platforms\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="PatternPlatform.cpp">
+      <Filter>Source Files\Entities\Platforms\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="Pattern.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform.cpp">
+      <Filter>Source Files\Entities\Platforms</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="StaticPlatform.h">
+      <Filter>Header Files\Entities\Platforms</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Entities\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicPlatform.h">
+      <Filter>Header Files\Entities\Platforms\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pattern.h">
+      <Filter>Header Files\Entities\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="PatternTypes.h">
+      <Filter>Header Files\Entities\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Header Files\Entities\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="PatternPlatform.h">
+      <Filter>Header Files\Entities\Platforms\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform.h">
+      <Filter>Header Files\Entities\Platforms</Filter>
+    </ClInclude>
+    <ClInclude Include="Orientation.h">
+      <Filter>Header Files\Entities\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="resource1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\resources\Drake.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\resources\drake2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\resources\volleyball.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
