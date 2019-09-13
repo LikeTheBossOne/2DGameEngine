@@ -110,18 +110,12 @@
     <ClInclude Include="Orientation.h">
       <Filter>Header Files\Entities\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="resource1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\resources\Drake.png">
+    <Image Include="assets\images\lance.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\resources\drake2.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\resources\volleyball.jpg">
+    <Image Include="assets\images\pole.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

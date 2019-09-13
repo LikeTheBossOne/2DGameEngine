@@ -14,7 +14,7 @@ public:
 	Platform(Game* game, sf::Vector2f location, sf::Vector2f size);
 	virtual void tick(sf::Time deltaTime);
 
-	virtual float getCurrentVelocityX() { return 0; };
+	virtual float getCurrentVelocityX() { return 0; }
 	virtual float getCurrentVelocityY() { return 0; }
 };
 

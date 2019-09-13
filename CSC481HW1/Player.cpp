@@ -134,7 +134,6 @@ void Player::tick(sf::Time deltaTime)
 					_velocityX = 0;
 				}
 				// printf("y: %f\n", plat->getPosition().y - this->getPosition().y);
-				break;
 			}
 		}
 		

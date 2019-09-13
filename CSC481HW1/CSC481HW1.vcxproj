@@ -21,8 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{5AD9E43D-753C-4A9A-A6D8-AB7BD98E3C86}</ProjectGuid>
-    <RootNamespace>CSC481HW1</RootNamespace>
+    <RootNamespace>CSC481Engine</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>CSC481Engine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -153,20 +154,12 @@
     <ClInclude Include="Platform.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="resource1.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="StaticPlatform.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\resources\Drake.png">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="..\resources\drake2.png">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="..\resources\volleyball.jpg">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
+    <Image Include="assets\images\lance.png" />
+    <Image Include="assets\images\pole.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

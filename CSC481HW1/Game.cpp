@@ -21,18 +21,28 @@ void Game::run()
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Homework 1", sf::Style::Default, settings);
 	window.setFramerateLimit(FRAMERATE);
 
-	// Create Player
+	// Load Textures
 	sf::Texture playerTexture;
-	if (!playerTexture.loadFromFile("assets/images/drake2.png"))
+	if (!playerTexture.loadFromFile("assets/images/lance.png"))
 	{
 		std::cout << "Failed to load player texture" << std::endl;
 		return;
 	}
+	sf::Texture poleTexture;
+	if (!poleTexture.loadFromFile("assets/images/pole.png"))
+	{
+		std::cout << "Failed to load pole texture" << std::endl;
+		return;
+	}
+
+	// Create Player
 	Player player(this, &playerTexture, sf::Vector2f(20, 400), sf::Vector2f(36, 64));
 
 	// Create Platforms
 	StaticPlatform floor(this, sf::Vector2f(0, WINDOW_HEIGHT - 100), sf::Vector2f(WINDOW_WIDTH, 100));
 	StaticPlatform sPlat(this, sf::Vector2f(100, 396), sf::Vector2f(100.f, 40.f));
+	StaticPlatform pole(this, &poleTexture, sf::Vector2f(740, 100), sf::Vector2f(60.f, 400.f));
+	pole.setTextureRect(sf::IntRect(0, 0, 27, 168));
 
 	std::vector<Pattern> patterns;
 	patterns.emplace_back(PatternTypes::RIGHT, 60, 1);
@@ -44,6 +54,7 @@ void Game::run()
 	_entities.emplace_back(&player);
 	_entities.emplace_back(&floor);
 	_entities.emplace_back(&sPlat);
+	_entities.emplace_back(&pole);
 	_entities.emplace_back(&pPlat);
 	
 	
@@ -93,6 +104,7 @@ void Game::run()
 		window.clear();
 		window.draw(floor);
 		window.draw(sPlat);
+		window.draw(pole);
 		window.draw(pPlat);
 		window.draw(player);
 
