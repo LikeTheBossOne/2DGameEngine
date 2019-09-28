@@ -11,7 +11,7 @@
 #include "DynamicPlatform.h"
 #include "PatternPlatform.h"
 
-Player::Player(Game* game, sf::Texture* texture, sf::Vector2f location, sf::Vector2f size) : sf::RectangleShape(size), Entity(game)
+Player::Player(Game* game, sf::Texture* texture, sf::Vector2f location, sf::Vector2f size) : Entity(game, size)
 {
 	this->setTexture(texture);
 	
@@ -24,11 +24,11 @@ Player::Player(Game* game, sf::Texture* texture, sf::Vector2f location, sf::Vect
 	_velocityX = 0;
 	_velocityY = 0;
 	_accelerationX = 0;
-	_accelerationY = .4;
+	_accelerationY = 0.01;
 	_groundPlat = nullptr;
 }
 
-Player::Player(Game* game, sf::Vector2f location, sf::Vector2f size) : sf::RectangleShape(size), Entity(game)
+Player::Player(Game* game, sf::Vector2f location, sf::Vector2f size) : Entity(game, size)
 {
 	this->setFillColor(sf::Color(150, 50, 250));
 	this->setPosition(location);
@@ -38,11 +38,14 @@ Player::Player(Game* game, sf::Vector2f location, sf::Vector2f size) : sf::Recta
 	_velocityX = 0;
 	_velocityY = 0;
 	_accelerationX = 0;
-	_accelerationY = .4;
+	_accelerationY = 0.01;
 	_groundPlat = nullptr;
 }
 
-void Player::tick(sf::Time deltaTime)
+Player::~Player()
+= default;
+
+void Player::tick(int deltaTime)
 {
 	// Calculate Velocity
 	_velocityX = _groundPlat != nullptr ? _groundPlat->getCurrentVelocityX() : 0;
@@ -50,13 +53,13 @@ void Player::tick(sf::Time deltaTime)
 	{
 		_velocityY = _groundPlat->getCurrentVelocityY();
 	}
-	_velocityY += _accelerationY;
+	_velocityY += _accelerationY * deltaTime;
 
 
 	// Get Inputs
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		_velocityX += -3; // Uses += to allow it to move normal speed relative to the platform it is on
+		_velocityX += -0.4; // Uses += to allow it to move normal speed relative to the platform it is on
 
 		// Temporary solution to sprite change
 		if (_orientation != Orientation::LEFT)
@@ -67,7 +70,7 @@ void Player::tick(sf::Time deltaTime)
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		_velocityX += 3;
+		_velocityX += 0.4;
 
 		// Temporary solution to sprite change
 		if (_orientation != Orientation::RIGHT)
@@ -78,7 +81,7 @@ void Player::tick(sf::Time deltaTime)
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && _groundPlat != nullptr)
 	{
-		_velocityY = -10;
+		_velocityY = -1.5;
 		_groundPlat = nullptr;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
@@ -89,7 +92,7 @@ void Player::tick(sf::Time deltaTime)
 	const float prevX = this->getPosition().x;
 	const float prevY = this->getPosition().y;
 	
-	this->move(_velocityX, _velocityY);
+	this->move(_velocityX * deltaTime, _velocityY * deltaTime);
 
 	bool grounded = false;
 	// Check Collisions
@@ -112,7 +115,7 @@ void Player::tick(sf::Time deltaTime)
 				
 				if (prevY + sizeY <= platY && currentY + sizeY > platY) // Can't go down
 				{
-					this->move(0, -rect.height);
+					this->setPosition(currentX, platY - sizeY);
 					_velocityY = 0;
 					
 					_groundPlat = plat;
@@ -120,20 +123,19 @@ void Player::tick(sf::Time deltaTime)
 				}
 				if (prevY >= platY + platSizeY && currentY < platY + platSizeY) // Can't go up
 				{
-					this->move(0, rect.height);
+					this->setPosition(currentX, platY + platSizeY);
 					_velocityY = 0;
 				}
 				if (prevX + sizeX <= platX && currentX + sizeX > platX) // Can't go right
 				{
-					this->move(-rect.width, 0);
+					this->setPosition(platX - sizeX, currentY);
 					_velocityX = 0;
 				}
 				if (prevX >= platX + platSizeX && currentX < platX + platSizeX) // Can't go left
 				{
-					this->move(rect.width, 0);
+					this->setPosition(platX + platSizeX, currentY);
 					_velocityX = 0;
 				}
-				// printf("y: %f\n", plat->getPosition().y - this->getPosition().y);
 			}
 		}
 		
@@ -156,7 +158,7 @@ void Player::tick(sf::Time deltaTime)
 
 				if (prevY + sizeY <= prevPlatY && currentY + sizeY > platY) // Can't go down
 				{
-					this->move(0, -rect.height);
+					this->setPosition(currentX, platY - sizeY);
 					_velocityY = 0;
 
 					_groundPlat = plat;
@@ -164,21 +166,19 @@ void Player::tick(sf::Time deltaTime)
 				}
 				if (prevY >= prevPlatY + platSizeY && currentY < platY + platSizeY) // Can't go up
 				{
-					this->move(0, rect.height);
+					this->setPosition(currentX, platY + platSizeY);
 					_velocityY = 0;
 				}
 				if (prevX + sizeX <= prevPlatX && currentX + sizeX > platX) // Can't go right
 				{
-					this->move(-rect.width, 0);
+					this->setPosition(platX - sizeX, currentY);
 					_velocityX = 0;
 				}
 				if (prevX >= prevPlatX + platSizeX && currentX < platX + platSizeX) // Can't go left
 				{
-					this->move(rect.width, 0);
+					this->setPosition(platX + platSizeX, currentY);
 					_velocityX = 0;
 				}
-				// printf("y: %f\n", plat->getPosition().y - this->getPosition().y);
-				break;
 			}
 		}
 	}

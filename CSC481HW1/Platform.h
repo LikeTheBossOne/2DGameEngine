@@ -7,12 +7,12 @@ namespace sf {
 	class Texture;
 }
 
-class Platform : public Entity, public sf::RectangleShape
+class Platform : public Entity
 {
 public:
 	Platform(Game* game, sf::Texture* texture, sf::Vector2f location, sf::Vector2f size);
 	Platform(Game* game, sf::Vector2f location, sf::Vector2f size);
-	virtual void tick(sf::Time deltaTime);
+	virtual void tick(int deltaTime);
 
 	virtual float getCurrentVelocityX() { return 0; }
 	virtual float getCurrentVelocityY() { return 0; }

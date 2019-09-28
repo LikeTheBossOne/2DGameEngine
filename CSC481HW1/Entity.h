@@ -1,15 +1,16 @@
 #pragma once
+#include <SFML/Graphics/RectangleShape.hpp>
 
 namespace sf {
 	class Time;
 }
 class Game;
 
-class Entity
+class Entity : public sf::RectangleShape
 {
 public:
-	Entity(Game* game);
-	virtual void tick(sf::Time deltaTime) = 0;
+	Entity(Game* game, sf::Vector2f size);
+	virtual void tick(int deltaTime) = 0;
 	// virtual void draw(sf::RenderTarget& target) = 0;
 protected:
 	Game* _game;

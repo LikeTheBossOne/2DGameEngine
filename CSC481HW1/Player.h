@@ -5,13 +5,14 @@
 
 class Platform;
 
-class Player: public sf::RectangleShape, public Entity
+class Player: public Entity
 {
 public:
 	Player(Game* game, sf::Texture* texture, sf::Vector2f location, sf::Vector2f size);
 	Player(Game* game, sf::Vector2f location, sf::Vector2f size);
+	~Player();
 
-	void tick(sf::Time deltaTime) override;
+	void tick(int deltaTime) override;
 private:
 	float _velocityX;
 	float _velocityY;

@@ -2,14 +2,18 @@
 #include <vector>
 
 class Entity;
+class EntityManager;
 
 class Game
 {
 public:
 	Game();
+	~Game();
 	void run();
-	std::vector<Entity*> getEntities() { return _entities; }
+	
+	EntityManager* getEntityManager() { return _entityManager; }
+	std::vector<Entity*> getEntities();
 private:
-	std::vector<Entity*> _entities;
+	EntityManager* _entityManager;
 };
 

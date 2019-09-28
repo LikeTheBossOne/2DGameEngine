@@ -7,7 +7,7 @@ class StaticPlatform : public Platform
 public:
 	StaticPlatform(Game* game, sf::Texture* texture, sf::Vector2f location, sf::Vector2f size);
 	StaticPlatform(Game* game, sf::Vector2f location, sf::Vector2f size);
-	void tick(sf::Time deltaTime);
+	void tick(int deltaTime);
 	// void draw();
 	
 };

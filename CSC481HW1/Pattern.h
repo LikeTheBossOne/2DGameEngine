@@ -4,14 +4,14 @@
 class Pattern
 {
 public:
-	Pattern(PatternTypes type, int ticksToComplete, float velocity);
+	Pattern(PatternTypes type, int ticksToComplete, float distance);
 
 	PatternTypes getType() { return _type; }
-	int getTicksToComplete() { return _ticksToComplete; }
-	float getVelocity() { return _velocity; }
+	int getGametimeToComplete() { return _gametimeToComplete; }
+	float getDistance() { return _distance; }
 private:
 	PatternTypes _type;
-	int _ticksToComplete;
-	float _velocity;
+	int _gametimeToComplete;
+	float _distance;
 };
 

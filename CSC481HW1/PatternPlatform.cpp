@@ -8,7 +8,10 @@ PatternPlatform(Game* game, sf::Texture* texture, sf::Vector2f location, sf::Vec
 {
 	_patterns = patterns;
 	_currentPattern = 0;
-	_patternTickCount = -1;
+	_patternGametimeCount = 0;
+
+	_startOfPatternX = location.x;
+	_startOfPatternY = location.y;
 }
 
 PatternPlatform::PatternPlatform(Game* game, sf::Vector2f location, sf::Vector2f size, std::vector<Pattern>& patterns)
@@ -16,53 +19,73 @@ PatternPlatform::PatternPlatform(Game* game, sf::Vector2f location, sf::Vector2f
 {
 	_patterns = patterns;
 	_currentPattern = 0;
-	_patternTickCount = -1;
+	_patternGametimeCount = 0;
+
+	_startOfPatternX = location.x;
+	_startOfPatternY = location.y;
 }
 
-void PatternPlatform::tick(sf::Time deltaTime)
+void PatternPlatform::tick(int deltaTime)
 {
-	// Calculate current state
-	Pattern* pat = &_patterns[_currentPattern];
-	_patternTickCount++;
+	// Assign previous position
+	_prevX = this->getPosition().x;
+	_prevY = this->getPosition().y;
 	
-	if (_patternTickCount >= pat->getTicksToComplete())
+	
+	Pattern* pat = &_patterns[_currentPattern];
+
+	int remainingDelta = deltaTime;
+	// Check if pattern will be finished after this deltaTime
+	while (_patternGametimeCount + remainingDelta >= pat->getGametimeToComplete())
 	{
-		_patternTickCount = 0;
+		switch (pat->getType())
+		{
+			case PatternTypes::LEFT:
+				this->setPosition(_startOfPatternX - float(pat->getDistance()), this->getPosition().y);
+				break;
+			case PatternTypes::RIGHT:
+				this->setPosition(_startOfPatternX + float(pat->getDistance()), this->getPosition().y);
+				break;
+			case PatternTypes::UP:
+				this->setPosition(this->getPosition().x, _startOfPatternY - float(pat->getDistance()));
+				break;
+			case PatternTypes::DOWN:
+				this->setPosition(this->getPosition().x, _startOfPatternY + float(pat->getDistance()));
+				break;
+			default: break;
+		}
+		remainingDelta -= (pat->getGametimeToComplete() - _patternGametimeCount);
 		
 		if (_currentPattern >= _patterns.size() - 1)
 		{
 			_currentPattern = 0;
-		} else
+		}
+		else
 		{
 			_currentPattern++;
 		}
+		pat = &_patterns[_currentPattern];
+		_patternGametimeCount = 0;
+		_startOfPatternX = this->getPosition().x;
+		_startOfPatternY = this->getPosition().y;
 	}
-	pat = &_patterns[_currentPattern];
-
-	// Record Previous location;
-	_prevX = this->getPosition().x;
-	_prevY = this->getPosition().y;
-
-	// Change Location;
-	float distance = pat->getVelocity();
 	switch (pat->getType())
 	{
 		case PatternTypes::LEFT:
-			this->move(-distance, 0);
+			this->move(getCurrentVelocityX() * remainingDelta, 0);
 			break;
 		case PatternTypes::RIGHT:
-			this->move(distance, 0);
+			this->move(getCurrentVelocityX() * remainingDelta, 0);
 			break;
 		case PatternTypes::UP:
-			this->move(0, -distance);
+			this->move(0, getCurrentVelocityY() * remainingDelta);
 			break;
 		case PatternTypes::DOWN:
-			this->move(0, distance);
+			this->move(0, getCurrentVelocityY() * remainingDelta);
 			break;
 		default: break;
 	}
-
-	// printf("X:%f, Y:%f\n", this->getPosition().x, this->getPosition().y);
+	_patternGametimeCount += remainingDelta;
 }
 
 Pattern PatternPlatform::getCurrentPattern()
@@ -75,11 +98,11 @@ float PatternPlatform::getCurrentVelocityX()
 	Pattern pat = getCurrentPattern();
 	if (pat.getType() == PatternTypes::LEFT)
 	{
-		return -pat.getVelocity();
+		return -(pat.getDistance() / float(pat.getGametimeToComplete()));
 	}
 	else if (pat.getType() == PatternTypes::RIGHT)
 	{
-		return pat.getVelocity();
+		return pat.getDistance() / float(pat.getGametimeToComplete());
 	}
 	return 0;
 }
@@ -89,11 +112,11 @@ float PatternPlatform::getCurrentVelocityY()
 	Pattern pat = getCurrentPattern();
 	if (pat.getType() == PatternTypes::UP)
 	{
-		return -pat.getVelocity();
+		return -(pat.getDistance() / float(pat.getGametimeToComplete()));
 	}
 	else if (pat.getType() == PatternTypes::DOWN)
 	{
-		return pat.getVelocity();
+		return pat.getDistance() / float(pat.getGametimeToComplete());
 	}
 	return 0;
 }

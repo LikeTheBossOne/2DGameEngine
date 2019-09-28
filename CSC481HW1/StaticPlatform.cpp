@@ -9,6 +9,6 @@ StaticPlatform::StaticPlatform(Game* game, sf::Vector2f location, sf::Vector2f s
 {
 }
 
-void StaticPlatform::tick(sf::Time deltaTime)
+void StaticPlatform::tick(int deltaTime)
 {
 }
