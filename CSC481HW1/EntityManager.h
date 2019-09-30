@@ -1,28 +1,32 @@
 #pragma once
-#include <vector>
+#include <map>
+#include <mutex>
 
 namespace sf {
 	class RenderWindow;
 }
 
 class Entity;
-class Player;
 
 class EntityManager
 {
 public:
 	EntityManager();
 
-	void setPlayer(Player* player);
-	void addEntity(Entity* entity);
-
-	std::vector<Entity*> getEntities() { return _entities; }
+	void setEntity(int GUID, Entity* entity);
+	void setPlayer(int GUID, Entity* entity);
+	void setMyPlayer(Entity* player);
+	
+	std::map<int, Entity*> getEntities() { return _entities; }
+	std::map<int, Entity*> getPlayers() { return _players; }
+	Entity* getMyPlayer() { return _myPlayer; }
 	
 	void tick(int deltaTime);
-	void draw(sf::RenderWindow& window);
+	void draw(sf::RenderWindow& window, std::mutex& myPlayerLock, std::mutex& playersLock, std::mutex& entitiesLock);
 private:
 
-	std::vector<Entity*> _entities;
-	Player* _player;
+	std::map<int, Entity*> _entities;
+	std::map<int, Entity*> _players;
+	Entity* _myPlayer;
 };
 

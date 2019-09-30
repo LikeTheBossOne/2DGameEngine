@@ -1,16 +1,16 @@
 #pragma once
-#include <SFML/Graphics/RectangleShape.hpp>
 #include "Entity.h"
 #include "Orientation.h"
+#include <string>
 
 class Platform;
 
 class Player: public Entity
 {
 public:
-	Player(Game* game, int GUID, sf::Texture* texture, sf::Vector2f location, sf::Vector2f size);
-	Player(Game* game, int GUID, sf::Vector2f location, sf::Vector2f size);
-	~Player();
+	Player(Game* game, std::string textureName, float x, float y, float width, float height);
+	Player(Game* game, float x, float y, float width, float height);
+	virtual ~Player();
 
 	void tick(int deltaTime) override;
 private:

@@ -1,7 +1,5 @@
 #pragma once
-#include <SFML/System/Vector2.hpp>
 #include "Entity.h"
-#include <SFML/Graphics/RectangleShape.hpp>
 
 namespace sf {
 	class Texture;
@@ -10,8 +8,8 @@ namespace sf {
 class Platform : public Entity
 {
 public:
-	Platform(Game* game, sf::Texture* texture, sf::Vector2f location, sf::Vector2f size);
-	Platform(Game* game, sf::Vector2f location, sf::Vector2f size);
+	Platform(Game* game, std::string textureName, float x, float y, float width, float height);
+	Platform(Game* game, float x, float y, float width, float height);
 	virtual void tick(int deltaTime);
 
 	virtual float getCurrentVelocityX() { return 0; }

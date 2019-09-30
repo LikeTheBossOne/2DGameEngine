@@ -1,67 +1,56 @@
 #include "Game.h"
-#include "PatternPlatform.h"
 #include "Settings.h"
 #include <iostream>
-#include "Player.h"
-#include "StaticPlatform.h"
 #include <SFML/Graphics.hpp>
-#include "Pattern.h"
 #include "Entity.h"
 #include "GameTime.h"
 #include "EntityManager.h"
 #include <thread>
+#include <zmq.hpp>
 
-Game::Game()
+Game::Game(int playerNumber)
 {
+	_shouldStartYet = false;
+	
+	_playerNumber = playerNumber;
+	
 	_entityManager = new EntityManager();
-}
 
-Game::~Game() = default;
-
-void Game::run()
-{
-	// Create Window
-	sf::ContextSettings settings;
-	settings.antialiasingLevel = 4;
-	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Homework 1", sf::Style::Default, settings);
-	// window.setFramerateLimit(FRAMERATE); // Remove this
+	_texturesMap = std::map<std::string, sf::Texture>();
 
 	// Load Textures
-	sf::Texture playerTexture;
-	if (!playerTexture.loadFromFile("assets/images/lance.png"))
+	sf::Texture lanceTexture;
+	if (!lanceTexture.loadFromFile("assets/images/lance.png"))
 	{
 		std::cout << "Failed to load player texture" << std::endl;
-		return;
+		exit(1);
 	}
 	sf::Texture poleTexture;
 	if (!poleTexture.loadFromFile("assets/images/pole.png"))
 	{
 		std::cout << "Failed to load pole texture" << std::endl;
-		return;
+		exit(1);
 	}
 
-	// Create Player
-	Player player(this, &playerTexture, sf::Vector2f(20, 400), sf::Vector2f(36, 64));
+	setTexture("lance", lanceTexture);
+	setTexture("pole", poleTexture);
+}
 
-	// Create Platforms
-	StaticPlatform floor(this, sf::Vector2f(0, WINDOW_HEIGHT - 100), sf::Vector2f(WINDOW_WIDTH, 100));
-	StaticPlatform sPlat(this, sf::Vector2f(100, 396), sf::Vector2f(100.f, 40.f));
-	StaticPlatform pole(this, &poleTexture, sf::Vector2f(740, 100), sf::Vector2f(60.f, 400.f));
-	pole.setTextureRect(sf::IntRect(0, 0, 27, 168));
+void Game::setTexture(std::string name, sf::Texture texture)
+{
+	_texturesMap[name] = texture;
+}
 
-	std::vector<Pattern> patterns;
-	patterns.emplace_back(PatternTypes::RIGHT, 1000, 100);
-	patterns.emplace_back(PatternTypes::LEFT, 1000, 100);
-	patterns.emplace_back(PatternTypes::DOWN, 1000, 150);
-	patterns.emplace_back(PatternTypes::UP, 1000, 150);
-	PatternPlatform pPlat(this, sf::Vector2f(300, 200), sf::Vector2f(100.f, 40.f), patterns);
+Game::~Game() = default;
 
-	_entityManager->setPlayer(&player);
-	_entityManager->addEntity(&floor);
-	_entityManager->addEntity(&sPlat);
-	_entityManager->addEntity(&pole);
-	_entityManager->addEntity(&pPlat);
-
+void Game::run(zmq::socket_t& socket, std::mutex& myPlayerLock, std::mutex& playersLock, std::mutex& entitiesLock)
+{
+	// Create Window
+	sf::ContextSettings settings;
+	settings.antialiasingLevel = 4;
+	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Homework 1", sf::Style::Default, settings);
+	
+	
 	// Timeline values
 	int timelineScaleChangeTime = 0;
 
@@ -76,7 +65,7 @@ void Game::run()
 	int deltaTime = 0;
 	// std::chrono::system_clock::time_point prevRT = std::chrono::system_clock::now();
 	while (window.isOpen())
-	{	
+	{
 		timelineScaleChangeTime++;
 
 
@@ -123,9 +112,9 @@ void Game::run()
 			}
 		}
 
-		
 
-		
+
+
 		// In Game
 		if (!gameTime.getPaused())
 		{
@@ -144,13 +133,50 @@ void Game::run()
 			// prevRT = std::chrono::system_clock::now();
 
 			// Tick
-			_entityManager->tick(deltaTime);
+			// _entityManager->tick(deltaTime);
+
+
+			// Send input
+			std::string inputString = std::to_string(_playerNumber) + "\n";
+			
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+			{
+				inputString.append("true");
+			}
+			else
+			{
+				inputString.append("false");
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+			{
+				inputString.append(",true");
+			}
+			else
+			{
+				inputString.append(",false");
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+			{
+				inputString.append(",true");
+			}
+			else
+			{
+				inputString.append(",false");
+			}
+			zmq::message_t inputMessage(inputString.data(), inputString.size());
+
+			socket.send(inputMessage, zmq::send_flags::none);
+
+			zmq::message_t response;
+			socket.recv(response);
+			auto responseString = std::string(static_cast<char*>(response.data()), response.size());
+			std::cout << responseString << std::endl;
 		}
-		
+
 
 		// Draw
 		window.clear();
-		_entityManager->draw(window);
+		_entityManager->draw(window, myPlayerLock, playersLock, entitiesLock);
 		if (gameTime.getPaused())
 		{
 			sf::Text text;
@@ -166,9 +192,4 @@ void Game::run()
 		}
 		window.display();
 	}
-}
-
-std::vector<Entity*> Game::getEntities()
-{
-	return _entityManager->getEntities();
 }

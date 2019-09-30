@@ -5,41 +5,45 @@
 
 EntityManager::EntityManager()
 {
-	_entities = std::vector<Entity*>();
-	_player = nullptr;
+	_entities = std::map<int, Entity*>();
+	_players = std::map<int, Entity*>();
+	_myPlayer = nullptr;
 }
 
-void EntityManager::setPlayer(Player* player)
+void EntityManager::setEntity(int GUID, Entity* entity)
 {
-	_player = player;
+	_entities[GUID] = entity;
 }
 
-void EntityManager::addEntity(Entity* entity)
+void EntityManager::setPlayer(int GUID, Entity* entity)
 {
-	_entities.emplace_back(entity);
+	_players[GUID] = entity;
 }
 
-/**
- * Update Entities then Player
- */
-void EntityManager::tick(int deltaTime)
+void EntityManager::setMyPlayer(Entity* player)
 {
-	for (Entity* entity : _entities)
-	{
-		entity->tick(deltaTime);
-	}
-	_player->tick(deltaTime);
+	_myPlayer = player;
 }
 
 /**
  * Render Entities then Player
  */
-void EntityManager::draw(sf::RenderWindow& window)
+void EntityManager::draw(sf::RenderWindow& window, std::mutex& myPlayerLock, std::mutex& playersLock, std::mutex& entitiesLock)
 {
-	for (Entity* entity : _entities)
+	entitiesLock.lock();
+	for (std::pair<int, Entity*> ePair : _entities)
 	{
-		window.draw(*entity);
+		window.draw(*ePair.second);
 	}
-	window.draw(*_player);
+	entitiesLock.unlock();
+	playersLock.lock();
+	for (std::pair<int, Entity*> ePair : _players)
+	{
+		window.draw(*ePair.second);
+	}
+	playersLock.unlock();
+	myPlayerLock.lock();
+	window.draw(*_myPlayer);
+	myPlayerLock.unlock();
 }
 
