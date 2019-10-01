@@ -18,19 +18,22 @@ public:
 	~Game();
 	void run(zmq::socket_t& socket, std::mutex& myPlayerLock, std::mutex& playersLock, std::mutex& entitiesLock);
 
-	void setTexture(std::string name, sf::Texture texture);
+	void setTexture(std::string name, sf::Texture* texture);
 	void setShouldStartYet(bool start) { _shouldStartYet = start; }
 	
 	EntityManager* getEntityManager() { return _entityManager; }
-	std::map<std::string, sf::Texture> getTexturesMap() { return _texturesMap; }
+	std::map<std::string, sf::Texture*> getTexturesMap() { return _texturesMap; }
 	int getPlayerNumber() { return _playerNumber; }
+	bool getShouldStartYet() { return _shouldStartYet; }
+	bool getShouldEnd() { return _shouldEnd; }
 private:
 	EntityManager* _entityManager;
 
 	int _playerNumber;
 
-	std::map<std::string, sf::Texture> _texturesMap;
+	std::map<std::string, sf::Texture*> _texturesMap;
 
 	bool _shouldStartYet;
+	bool _shouldEnd;
 };
 

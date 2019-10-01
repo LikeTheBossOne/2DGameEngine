@@ -25,7 +25,7 @@ void Game::run(zmq::socket_t& publisher)
 	// Create Platforms
 	StaticPlatform floor(this, 0, WINDOW_HEIGHT - 100, WINDOW_WIDTH, 100);
 	StaticPlatform sPlat(this, 100, 396, 100.f, 40.f);
-	StaticPlatform pole(this, "assets/images/pole.png", 740, 100, 60.f, 400.f);
+	StaticPlatform pole(this, "pole", 740, 100, 60.f, 400.f);
 	pole.setTextureRect(new EntityRectangle(0, 0, 27, 168));
 
 	std::vector<Pattern> patterns;
@@ -89,7 +89,7 @@ void Game::run(zmq::socket_t& publisher)
 		{
 			Player* p = pPair.second;
 			entitiesString += std::to_string(p->getGUID()) + ",";
-			entitiesString += "player";
+			entitiesString += "player,";
 			entitiesString += std::to_string(p->getX()) + ",";
 			entitiesString += std::to_string(p->getY()) + ",";
 			entitiesString += std::to_string(p->getWidth()) + ",";
@@ -112,11 +112,11 @@ void Game::run(zmq::socket_t& publisher)
 			entitiesString += "\n";
 		}
 
-		for (std::pair<int, Entity*> pPair : players)
+		for (std::pair<int, Entity*> pPair : entities)
 		{
 			Entity* e = pPair.second;
 			entitiesString += std::to_string(e->getGUID()) + ",";
-			entitiesString += "entity";
+			entitiesString += "entity,";
 			entitiesString += std::to_string(e->getX()) + ",";
 			entitiesString += std::to_string(e->getY()) + ",";
 			entitiesString += std::to_string(e->getWidth()) + ",";

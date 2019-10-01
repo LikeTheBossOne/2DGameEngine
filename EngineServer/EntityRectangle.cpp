@@ -48,8 +48,8 @@ bool EntityRectangle::intersects(EntityRectangle& otherRect, EntityRectangle& in
 	// Compute the min and max of the second rectangle on both axes
 	const float r2MinX = std::min(otherRect.getX(), otherRect.getX() + otherRect.getWidth());
 	const float r2MaxX = std::max(otherRect.getX(), otherRect.getX() + otherRect.getWidth());
-	const float r2MinY = std::min(otherRect.getY(), otherRect.getY() + otherRect.getWidth());
-	const float r2MaxY = std::max(otherRect.getY(), otherRect.getY() + otherRect.getWidth());
+	const float r2MinY = std::min(otherRect.getY(), otherRect.getY() + otherRect.getHeight());
+	const float r2MaxY = std::max(otherRect.getY(), otherRect.getY() + otherRect.getHeight());
 
 	// Compute the floatersection boundaries
 	const float interLeft = std::max(r1MinX, r2MinX);

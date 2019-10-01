@@ -8,6 +8,7 @@
 #include "InputManager.h"
 #include "Inputs.h"
 #include "Settings.h"
+#include <algorithm>
 
 Player::Player(Game* game, std::string textureName, float x, float y, float width, float height) : Entity(game, textureName, x, y, width, height)
 {
@@ -114,6 +115,7 @@ void Player::tick(int deltaTime)
 				{
 					this->setPosition(currentX, platY + platSizeY);
 					_velocityY = 0;
+					std::cout << "UP" << std::endl;
 				}
 				if (prevX + sizeX <= platX && currentX + sizeX > platX) // Can't go right
 				{
@@ -156,7 +158,7 @@ void Player::tick(int deltaTime)
 				if (prevY >= prevPlatY + platSizeY && currentY < platY + platSizeY) // Can't go up
 				{
 					this->setPosition(currentX, platY + platSizeY);
-					_velocityY = 0;
+					_velocityY = std::max(_velocityY, 0.f);
 				}
 				if (prevX + sizeX <= prevPlatX && currentX + sizeX > platX) // Can't go right
 				{

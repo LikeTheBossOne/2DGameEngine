@@ -11,10 +11,10 @@ const std::string PUBSUB_PORT = "tcp://localhost:5560";
 void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& myPlayerLock, std::mutex& playersLock, std::mutex& entitiesLock)
 {
 	zmq::socket_t subscriber(context, ZMQ_SUB);
-	subscriber.bind(PUBSUB_PORT);
+	subscriber.connect(PUBSUB_PORT);
 	subscriber.setsockopt(ZMQ_SUBSCRIBE, "", 0);
 	
-	while (true)
+	while (!game.getShouldEnd())
 	{
 		zmq::message_t subMessage;
 		subscriber.recv(subMessage);
@@ -26,6 +26,7 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 		std::string entityLine;
 		while (std::getline(subStream, entityLine))
 		{
+			bool remove;
 			int guid;
 			std::string type;
 			float x;
@@ -42,6 +43,7 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 			std::string field;
 			std::istringstream entityStream(entityLine);
 
+			
 			// _GUID
 			std::getline(entityStream, field, ',');
 			guid = std::stoi(field);
@@ -70,30 +72,33 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 			std::getline(entityStream, field, ',');
 			if (field == "true") texture = true;
 			else texture = false;
+			if (texture)
+			{
+				// TEXTURE X
+				std::getline(entityStream, field, ',');
+				textureX = std::stof(field);
 
-			// TEXTURE X
-			std::getline(entityStream, field, ',');
-			textureX = std::stof(field);
+				// TEXTURE Y
+				std::getline(entityStream, field, ',');
+				textureY = std::stof(field);
 
-			// TEXTURE Y
-			std::getline(entityStream, field, ',');
-			textureY = std::stof(field);
+				// TEXTURE WIDTH
+				std::getline(entityStream, field, ',');
+				textureWidth = std::stof(field);
 
-			// TEXTURE WIDTH
-			std::getline(entityStream, field, ',');
-			textureWidth = std::stof(field);
+				// TEXTURE HEIGHT
+				std::getline(entityStream, field, ',');
+				textureHeight = std::stof(field);
 
-			// TEXTURE HEIGHT
-			std::getline(entityStream, field, ',');
-			textureHeight = std::stof(field);
-
-			// TEXTURE NAME
-			std::getline(entityStream, field, ',');
-			textureName = field;
+				// TEXTURE NAME
+				std::getline(entityStream, field, ',');
+				textureName = field;
+			}
 
 
 			// Build entity
-			if (guid == game.getEntityManager()->getMyPlayer()->getGUID())
+			if (game.getEntityManager()->getMyPlayer() != nullptr
+				&& guid == game.getEntityManager()->getMyPlayer()->getGUID())
 			{
 				myPlayerLock.lock();
 				
@@ -103,7 +108,10 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 				if (texture)
 				{
 					myPlayer->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
-					myPlayer->setTexture(&game.getTexturesMap()["lance"]);
+				}
+				else
+				{
+					myPlayer->setFillColor(sf::Color(150, 50, 250));
 				}
 				
 				myPlayerLock.unlock();
@@ -118,7 +126,10 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 				if (texture)
 				{
 					player->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
-					player->setTexture(&game.getTexturesMap()["lance"]);
+				}
+				else
+				{
+					player->setFillColor(sf::Color(150, 50, 250));
 				}
 
 				playersLock.unlock();
@@ -133,7 +144,10 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 				if (texture)
 				{
 					entity->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
-					entity->setTexture(&game.getTexturesMap()["lance"]);
+				}
+				else
+				{
+					entity->setFillColor(sf::Color(150, 50, 250));
 				}
 
 				entitiesLock.unlock();
@@ -149,11 +163,19 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 					if (texture)
 					{
 						player->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
-						player->setTexture(&game.getTexturesMap()["lance"]);
+						player->setTexture(game.getTexturesMap()[textureName]);
+					}
+					else
+					{
+						player->setFillColor(sf::Color(150, 50, 250));
 					}
 					game.getEntityManager()->setMyPlayer(player);
 
 					myPlayerLock.unlock();
+					if (!game.getShouldStartYet())
+					{
+						game.setShouldStartYet(true);
+					}
 				}
 				else if (type == "player") // new player joined
 				{
@@ -164,7 +186,11 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 					if (texture)
 					{
 						player->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
-						player->setTexture(&game.getTexturesMap()["lance"]);
+						player->setTexture(game.getTexturesMap()[textureName]);
+					}
+					else
+					{
+						player->setFillColor(sf::Color(150, 50, 250));
 					}
 					game.getEntityManager()->setPlayer(guid, player);
 
@@ -179,7 +205,11 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 					if (texture)
 					{
 						entity->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
-						entity->setTexture(&game.getTexturesMap()["lance"]);
+						entity->setTexture(game.getTexturesMap()[textureName]);
+					}
+					else
+					{
+						entity->setFillColor(sf::Color(150, 50, 250));
 					}
 					game.getEntityManager()->setEntity(guid, entity);
 
@@ -188,6 +218,7 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 			}
 		}
 	}
+	subscriber.close();
 }
 
 int main()
@@ -225,5 +256,6 @@ int main()
 	
 	game.run(socket, myPlayerLock, playersLock, entitiesLock);
 
+	subscriberThread.join();
 	return 0;
 }

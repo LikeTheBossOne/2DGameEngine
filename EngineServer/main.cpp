@@ -22,7 +22,8 @@ void reqRepCommunication(Game& game, zmq::context_t& context)
 		if (requestString == "OPEN")
 		{
 			// Create Player for client
-			Player* clientsPlayer = new Player(&game, "assets/images/lance.png", 20, 400, 36, 64);
+			Player* clientsPlayer = new Player(&game, "lance", 20, 400, 36, 64);
+			clientsPlayer->setTextureRect(new EntityRectangle(0, 0, 17, 27));
 			game.getEntityManager()->addPlayer(clientsPlayer);
 
 			// Assign client id based on player _GUID
@@ -46,31 +47,31 @@ void reqRepCommunication(Game& game, zmq::context_t& context)
 			
 			std::string inputString;
 			std::getline(f, inputString);
-			std::istringstream inputKeyStream(inputString);
 
-			std::string key;
-			while (std::getline(inputKeyStream, key, ','))
+			// Remove player
+			if (inputString == "CLOSE")
 			{
-				if (key == "true")
-				{
-					keys.emplace_back(true);
-				} else if (key == "false")
-				{
-					keys.emplace_back(false);
-				}
-				
+				game.getEntityManager()->getPlayers().erase(playerNumber);
 			}
+			else
+			{
+				std::istringstream inputKeyStream(inputString);
 
-			game.getInputManager()->setPlayerKeyPressed(playerNumber, keys);
+				std::string key;
+				while (std::getline(inputKeyStream, key, ','))
+				{
+					if (key == "true")
+					{
+						keys.emplace_back(true);
+					}
+					else if (key == "false")
+					{
+						keys.emplace_back(false);
+					}
 
-			// std::cout << playerNumber << ": ";
-			// std::vector<bool> retKeys = game.getInputManager()->getPlayerKeysPressed(playerNumber);
-			// for (bool b : retKeys)
-			// {
-			// 	if (b) std::cout << "true";
-			// 	else std::cout << "false";
-			// }
-			// std::cout << std::endl;
+				}
+				game.getInputManager()->setPlayerKeyPressed(playerNumber, keys);
+			}
 
 			
 			// Respond
