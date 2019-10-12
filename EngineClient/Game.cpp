@@ -5,19 +5,20 @@
 #include "Entity.h"
 #include "GameTime.h"
 #include "EntityManager.h"
+#include "ResourceManager.h"
 #include <thread>
 #include <zmq.hpp>
 
-Game::Game(int playerNumber)
+Game::Game(int clientNumber, int playerNumber)
 {
 	_shouldStartYet = false;
 	_shouldEnd = false;
-	
+
+	_clientNumber = clientNumber;
 	_playerNumber = playerNumber;
 	
-	_entityManager = new EntityManager();
-
-	_texturesMap = std::map<std::string, sf::Texture*>();
+	_entityManager = new EntityManager(this);
+	_resourceManager = new ResourceManager(this);
 
 	// Load Textures
 	sf::Texture* lanceTexture = new sf::Texture();
@@ -33,13 +34,8 @@ Game::Game(int playerNumber)
 		exit(1);
 	}
 
-	setTexture("lance", lanceTexture);
-	setTexture("pole", poleTexture);
-}
-
-void Game::setTexture(std::string name, sf::Texture* texture)
-{
-	_texturesMap[name] = texture;
+	getResourceManager()->addTexture("lance", lanceTexture);
+	getResourceManager()->addTexture("pole", poleTexture);
 }
 
 Game::~Game() = default;
@@ -64,7 +60,7 @@ void Game::run(zmq::socket_t& socket, std::mutex& myPlayerLock, std::mutex& play
 	GameTime gameTime(STEP_SIZE);
 	int previousTime = gameTime.getTime();
 	int deltaTime = 0;
-	// std::chrono::system_clock::time_point prevRT = std::chrono::system_clock::now();
+	
 	while (window.isOpen())
 	{
 		timelineScaleChangeTime++;

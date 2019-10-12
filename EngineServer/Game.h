@@ -20,8 +20,12 @@ public:
 	EntityManager* getEntityManager() { return _entityManager; }
 	InputManager* getInputManager() { return _inputManager; }
 	std::map<int, Entity*> getEntities();
+
+	int getTotalPlayerCount() { return _totalPlayerCount; }
 private:
 	EntityManager* _entityManager;
 	InputManager* _inputManager;
+
+	int _totalPlayerCount;
 };
 

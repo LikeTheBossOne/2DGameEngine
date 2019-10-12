@@ -27,7 +27,7 @@ void reqRepCommunication(Game& game, zmq::context_t& context)
 			game.getEntityManager()->addPlayer(clientsPlayer);
 
 			// Assign client id based on player _GUID
-			auto responseString = std::to_string(clientsPlayer->getGUID());
+			auto responseString = std::to_string(clientsPlayer->getGUID()) + " " + std::to_string(game.getTotalPlayerCount());
 			zmq::message_t response(responseString.data(), responseString.size());
 			
 			registrar.send(response, zmq::send_flags::none);
@@ -51,7 +51,7 @@ void reqRepCommunication(Game& game, zmq::context_t& context)
 			// Remove player
 			if (inputString == "CLOSE")
 			{
-				game.getEntityManager()->getPlayers().erase(playerNumber);
+				game.getEntityManager()->deletePlayer(playerNumber);
 			}
 			else
 			{

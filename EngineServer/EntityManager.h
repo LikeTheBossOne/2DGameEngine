@@ -13,6 +13,7 @@ public:
 
 	void addPlayer(Player* player);
 	void addEntity(Entity* entity);
+	void deletePlayer(int GUID);
 
 	std::map<int, Entity*> getEntities() { return _entities; };
 	std::map<int, Player*> getPlayers() { return _players; };

@@ -27,6 +27,11 @@ void EntityManager::addEntity(Entity* entity)
 	_entities.emplace(entity->getGUID(), entity);
 }
 
+void EntityManager::deletePlayer(int GUID)
+{
+	_players.erase(GUID);
+}
+
 /**
  * Update Entities then Player
  */

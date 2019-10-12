@@ -16,6 +16,8 @@ Game::Game()
 {
 	_entityManager = new EntityManager(this);
 	_inputManager = new InputManager(this);
+
+	_totalPlayerCount = 0;
 }
 
 Game::~Game() = default;

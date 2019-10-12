@@ -1,5 +1,4 @@
 #pragma once
-#include <map>
 #include <string>
 #include <SFML/Graphics/Texture.hpp>
 #include <mutex>
@@ -10,28 +9,30 @@ namespace zmq {
 
 class Entity;
 class EntityManager;
+class ResourceManager;
 
 class Game
 {
 public:
-	Game(int playerNumber);
+	Game(int clientNumber, int playerNumber);
 	~Game();
 	void run(zmq::socket_t& socket, std::mutex& myPlayerLock, std::mutex& playersLock, std::mutex& entitiesLock);
-
-	void setTexture(std::string name, sf::Texture* texture);
+	
 	void setShouldStartYet(bool start) { _shouldStartYet = start; }
 	
 	EntityManager* getEntityManager() { return _entityManager; }
-	std::map<std::string, sf::Texture*> getTexturesMap() { return _texturesMap; }
+	ResourceManager* getResourceManager() { return _resourceManager; }
+	
+	int getClientNumber() { return _clientNumber; }
 	int getPlayerNumber() { return _playerNumber; }
 	bool getShouldStartYet() { return _shouldStartYet; }
 	bool getShouldEnd() { return _shouldEnd; }
 private:
 	EntityManager* _entityManager;
+	ResourceManager* _resourceManager;
 
+	int _clientNumber;
 	int _playerNumber;
-
-	std::map<std::string, sf::Texture*> _texturesMap;
 
 	bool _shouldStartYet;
 	bool _shouldEnd;

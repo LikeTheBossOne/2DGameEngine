@@ -3,6 +3,7 @@
 #include <zmq.hpp>
 #include <thread>
 #include "EntityManager.h"
+#include "ResourceManager.h"
 #include "Entity.h"
 
 const std::string REQREP_PORT = "tcp://localhost:5555";
@@ -21,6 +22,10 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 
 		auto subString = std::string(static_cast<char*>(subMessage.data()), subMessage.size());
 
+		// Create list to potentially delete players who have DC'd
+		auto playersToDelete = game.getEntityManager()->getPlayers();
+
+		
 		std::istringstream subStream(subString);
 
 		std::string entityLine;
@@ -94,8 +99,7 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 				std::getline(entityStream, field, ',');
 				textureName = field;
 			}
-
-
+			
 			// Build entity
 			if (game.getEntityManager()->getMyPlayer() != nullptr
 				&& guid == game.getEntityManager()->getMyPlayer()->getGUID())
@@ -163,7 +167,7 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 					if (texture)
 					{
 						player->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
-						player->setTexture(game.getTexturesMap()[textureName]);
+						player->setTexture(game.getResourceManager()->getTexturesMap()[textureName]);
 					}
 					else
 					{
@@ -186,7 +190,7 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 					if (texture)
 					{
 						player->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
-						player->setTexture(game.getTexturesMap()[textureName]);
+						player->setTexture(game.getResourceManager()->getTexturesMap()[textureName]);
 					}
 					else
 					{
@@ -205,7 +209,7 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 					if (texture)
 					{
 						entity->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
-						entity->setTexture(game.getTexturesMap()[textureName]);
+						entity->setTexture(game.getResourceManager()->getTexturesMap()[textureName]);
 					}
 					else
 					{
@@ -216,6 +220,13 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 					entitiesLock.unlock();
 				}
 			}
+
+			// remove from toDelete list
+			playersToDelete.erase(guid);
+		}
+		for (auto pair : playersToDelete)
+		{
+			game.getEntityManager()->deletePlayer(pair.first, playersLock);
 		}
 	}
 	subscriber.close();
@@ -234,14 +245,24 @@ int main()
 
 	zmq::message_t firstResponse;
 	socket.recv(firstResponse);
-	const int playerNumber = std::stoi(std::string(static_cast<char*>(firstResponse.data()), firstResponse.size()));
+
+	// Get data about this client/player
+	auto firstString = std::string(static_cast<char*>(firstResponse.data()), firstResponse.size());
+	std::istringstream firstStream(firstString);
+	std::string firstLine;
+
+	std::getline(firstStream, firstLine, ' ');
+	const int playerNumber = std::stoi(firstLine);
+
+	std::getline(firstStream, firstLine, ' ');
+	const int clientNumber = std::stoi(firstLine);
 
 
 	std::mutex myPlayerLock;
 	std::mutex playersLock;
 	std::mutex entitiesLock;
 	// Start Game
-	Game game(playerNumber);
+	Game game(clientNumber, playerNumber);
 
 	std::thread subscriberThread(
 		subscriberCommunication,

@@ -1,10 +1,12 @@
 #include "EntityManager.h"
-#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics.hpp>
 #include "Entity.h"
 #include "Player.h"
 
-EntityManager::EntityManager()
+EntityManager::EntityManager(Game* game)
 {
+	_game = game;
+	
 	_entities = std::map<int, Entity*>();
 	_players = std::map<int, Entity*>();
 	_myPlayer = nullptr;
@@ -23,6 +25,13 @@ void EntityManager::setPlayer(int GUID, Entity* entity)
 void EntityManager::setMyPlayer(Entity* player)
 {
 	_myPlayer = player;
+}
+
+void EntityManager::deletePlayer(int GUID, std::mutex& playersLock)
+{
+	playersLock.lock();
+	_players.erase(GUID);
+	playersLock.unlock();
 }
 
 /**
