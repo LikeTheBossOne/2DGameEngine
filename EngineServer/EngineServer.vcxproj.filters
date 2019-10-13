@@ -55,6 +55,9 @@
     <Filter Include="Source Files\Entities\Platforms\Dynamic">
       <UniqueIdentifier>{7ef12737-82a3-43d8-ad51-0b9ece01f4d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{66b55b05-76d9-4883-91ea-968b6f7104f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

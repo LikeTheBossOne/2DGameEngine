@@ -16,10 +16,10 @@ Player::Player(Game* game, std::string textureName, float x, float y, float widt
 	
 	_orientation = Orientation::RIGHT;
 
-	_velocityX = 0;
-	_velocityY = 0;
-	_accelerationX = 0;
-	_accelerationY = 0.01;
+	_velocityX = 0.f;
+	_velocityY = 0.f;
+	_accelerationX = 0.f;
+	_accelerationY = 0.01f;
 	_groundPlat = nullptr;
 }
 
@@ -28,10 +28,10 @@ Player::Player(Game* game, float x, float y, float width, float height) : Entity
 
 	_orientation = Orientation::RIGHT;
 	
-	_velocityX = 0;
-	_velocityY = 0;
-	_accelerationX = 0;
-	_accelerationY = 0.01;
+	_velocityX = 0.f;
+	_velocityY = 0.f;
+	_accelerationX = 0.f;
+	_accelerationY = 0.01f;
 	_groundPlat = nullptr;
 }
 
@@ -52,7 +52,7 @@ void Player::tick(int deltaTime)
 	// Get Inputs
 	if (_game->getInputManager()->getPlayerKeysPressed(this->getGUID())[int(Inputs::LEFT)])
 	{
-		_velocityX += -0.4; // Uses += to allow it to move normal speed relative to the platform it is on
+		_velocityX += -0.4f; // Uses += to allow it to move normal speed relative to the platform it is on
 
 		// Temporary solution to sprite change
 		if (_orientation != Orientation::LEFT)
@@ -63,7 +63,7 @@ void Player::tick(int deltaTime)
 	}
 	else if (_game->getInputManager()->getPlayerKeysPressed(this->getGUID())[int(Inputs::RIGHT)])
 	{
-		_velocityX += 0.4;
+		_velocityX += 0.4f;
 
 		// Temporary solution to sprite change
 		if (_orientation != Orientation::RIGHT)

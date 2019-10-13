@@ -31,6 +31,12 @@
     <Filter Include="Header Files\Utilities">
       <UniqueIdentifier>{cae973d3-82de-4959-9794-b90531f1db03}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{8c9581f4-c5f0-4d1d-9b65-df55e394bac2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{2a325929-3a16-401a-9e6d-fbccc6f0e70f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -59,6 +65,9 @@
     </ClCompile>
     <ClCompile Include="GameCamera.cpp">
       <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source Files\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -97,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="GameCamera.h">
       <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

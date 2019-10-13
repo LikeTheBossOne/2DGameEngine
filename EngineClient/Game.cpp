@@ -2,7 +2,7 @@
 #include "Settings.h"
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include "Entity.h"
+#include <stdlib.h>
 #include "GameTime.h"
 #include "EntityManager.h"
 #include "ResourceManager.h"
@@ -25,13 +25,13 @@ Game::Game(int clientNumber, int playerNumber)
 	if (!lanceTexture->loadFromFile("assets/images/lance.png"))
 	{
 		std::cout << "Failed to load player texture" << std::endl;
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	sf::Texture* poleTexture = new sf::Texture();
 	if (!poleTexture->loadFromFile("assets/images/pole.png"))
 	{
 		std::cout << "Failed to load pole texture" << std::endl;
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 
 	getResourceManager()->addTexture("lance", lanceTexture);
