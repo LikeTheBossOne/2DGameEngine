@@ -1,14 +1,16 @@
 #pragma once
-#include "Entity.h"
-#include "Platform.h"
+#include "GameObject.h"
+#include <string>
+#include "Rect.h"
+#include "EngineRectangle.h"
 
-class StaticPlatform : public Platform
+class PhysicsEngineSettings;
+
+class StaticPlatform : public GameObject
 {
 public:
-	StaticPlatform(Game* game, std::string textureName, float x, float y, float width, float height);
-	StaticPlatform(Game* game, float x, float y, float width, float height);
-	void tick(int deltaTime);
-	// void draw();
-	
+	StaticPlatform(PhysicsEngineSettings* physSettings, Rect position, int r, int g, int b);
+
+	std::string getType() override { return "StaticPlatform"; }
 };
 

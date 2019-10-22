@@ -129,26 +129,47 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DynamicPlatform.cpp" />
-    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="CollisionsManager.cpp" />
+    <ClCompile Include="ColorComponent.cpp" />
+    <ClCompile Include="GenericComponent.cpp" />
+    <ClCompile Include="PlayerInputComponent.cpp" />
+    <ClCompile Include="JumpComponent.cpp" />
+    <ClCompile Include="MovementComponent.cpp" />
+    <ClCompile Include="PatternComponent.cpp" />
+    <ClCompile Include="PhysicsEngineSettings.cpp" />
+    <ClCompile Include="Rect.cpp" />
+    <ClCompile Include="RectangleColliderComponent.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pattern.cpp" />
     <ClCompile Include="PatternPlatform.cpp" />
-    <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="EntityRectangle.cpp" />
+    <ClCompile Include="EngineRectangle.cpp" />
+    <ClCompile Include="RigidBodyComponent.cpp" />
     <ClCompile Include="StaticPlatform.cpp" />
+    <ClCompile Include="TextureComponent.cpp" />
     <ClCompile Include="Timeline.cpp" />
+    <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DynamicPlatform.h" />
-    <ClInclude Include="Entity.h" />
+    <ClInclude Include="CollisionsManager.h" />
+    <ClInclude Include="ColorComponent.h" />
+    <ClInclude Include="GenericComponent.h" />
+    <ClInclude Include="ComponentTypes.h" />
+    <ClInclude Include="PlayerInputComponent.h" />
+    <ClInclude Include="JumpComponent.h" />
+    <ClInclude Include="MovementComponent.h" />
+    <ClInclude Include="PatternComponent.h" />
+    <ClInclude Include="PhysicsEngineSettings.h" />
+    <ClInclude Include="Rect.h" />
+    <ClInclude Include="RectangleColliderComponent.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTime.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Inputs.h" />
@@ -156,12 +177,14 @@
     <ClInclude Include="Pattern.h" />
     <ClInclude Include="PatternPlatform.h" />
     <ClInclude Include="PatternTypes.h" />
-    <ClInclude Include="Platform.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="EntityRectangle.h" />
+    <ClInclude Include="EngineRectangle.h" />
+    <ClInclude Include="RigidBodyComponent.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="StaticPlatform.h" />
+    <ClInclude Include="TextureComponent.h" />
     <ClInclude Include="Timeline.h" />
+    <ClInclude Include="TransformComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

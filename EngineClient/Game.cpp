@@ -21,13 +21,13 @@ Game::Game(int clientNumber, int playerNumber)
 	_resourceManager = new ResourceManager(this);
 
 	// Load Textures
-	sf::Texture* lanceTexture = new sf::Texture();
+	auto lanceTexture = new sf::Texture();
 	if (!lanceTexture->loadFromFile("assets/images/lance.png"))
 	{
 		std::cout << "Failed to load player texture" << std::endl;
 		exit(EXIT_FAILURE);
 	}
-	sf::Texture* poleTexture = new sf::Texture();
+	auto poleTexture = new sf::Texture();
 	if (!poleTexture->loadFromFile("assets/images/pole.png"))
 	{
 		std::cout << "Failed to load pole texture" << std::endl;
@@ -36,6 +36,12 @@ Game::Game(int clientNumber, int playerNumber)
 
 	getResourceManager()->addTexture("lance", lanceTexture);
 	getResourceManager()->addTexture("pole", poleTexture);
+
+	// Lance animations
+	auto lanceAnims = std::vector<sf::IntRect>();
+	lanceAnims.emplace_back(0, 0, 17, 27);
+	lanceAnims.emplace_back(0, 28, 17, 27);
+	getResourceManager()->addTextureAnimations("lance", lanceAnims);
 }
 
 Game::~Game() = default;

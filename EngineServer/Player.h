@@ -1,26 +1,19 @@
 #pragma once
-#include "Entity.h"
 #include "Orientation.h"
+#include "GameObject.h"
 #include <string>
+#include "Rect.h"
+#include "EngineRectangle.h"
 
+class PhysicsEngineSettings;
+class Game;
 class Platform;
 
-class Player: public Entity
+class Player: public GameObject
 {
 public:
-	Player(Game* game, std::string textureName, float x, float y, float width, float height);
-	Player(Game* game, float x, float y, float width, float height);
-	virtual ~Player();
+	Player(PhysicsEngineSettings* physSettings, Rect position, std::string textureName);
 
-	void tick(int deltaTime) override;
-private:
-	float _velocityX;
-	float _velocityY;
-	float _accelerationX;
-	float _accelerationY;
-
-	Platform* _groundPlat;
-
-	Orientation _orientation;
+	std::string getType() override { return "Player"; }
 };
 

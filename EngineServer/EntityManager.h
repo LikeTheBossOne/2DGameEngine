@@ -1,31 +1,36 @@
 #pragma once
 #include <map>
 #include <mutex>
+#include <vector>
 
-class Entity;
-class Player;
+class GameObject;
 class Game;
+class CollisionsManager;
+class PhysicsEngineSettings;
 
 class EntityManager
 {
 public:
 	EntityManager(Game* game);
 
-	void addPlayer(Player* player);
-	void addEntity(Entity* entity);
-	void deletePlayer(int GUID);
+	void addEntity(GameObject* entity);
+	void deleteEntity(int GUID);
 
-	std::map<int, Entity*> getEntities() { return _entities; };
-	std::map<int, Player*> getPlayers() { return _players; };
+	std::map<int, GameObject*> getEntities();
 	
-	void tick(int deltaTime);
-	
+	void update(int deltaTime);
+
+	PhysicsEngineSettings* getPhysicsEngineSettings() { return _physicsEngineSettings; }
 private:
 	Game* _game;
-	
-	std::map<int, Entity*> _entities;
-	std::map<int, Player*> _players;
 
-	std::mutex _playerLock;
+	CollisionsManager* _collisionsManager;
+
+	PhysicsEngineSettings* _physicsEngineSettings;
+	
+	std::map<int, GameObject*> _entities;
+	int _totalEntitiesToDate;
+
+	std::mutex _entitiesLock;
 };
 

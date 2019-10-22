@@ -25,7 +25,6 @@ public:
 	std::map<int, Entity*> getPlayers() { return _players; }
 	Entity* getMyPlayer() { return _myPlayer; }
 	
-	void tick(int deltaTime);
 	void draw(sf::RenderWindow& window, std::mutex& myPlayerLock, std::mutex& playersLock, std::mutex& entitiesLock);
 private:
 	Game* _game;

@@ -1,9 +1,6 @@
 #pragma once
 #include <SFML/Graphics/RectangleShape.hpp>
 
-namespace sf {
-	class Time;
-}
 class Game;
 
 class Entity : public sf::RectangleShape

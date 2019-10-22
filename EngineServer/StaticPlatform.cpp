@@ -1,13 +1,19 @@
 #include "StaticPlatform.h"
+#include "TransformComponent.h"
+#include "TextureComponent.h"
+#include "RigidBodyComponent.h"
+#include "RectangleColliderComponent.h"
+#include "PhysicsEngineSettings.h"
+#include "ColorComponent.h"
 
-StaticPlatform::StaticPlatform(Game* game, std::string textureName, float x, float y, float width, float height) : Platform(game, textureName, x, y, width, height)
+StaticPlatform::StaticPlatform(PhysicsEngineSettings* physSettings, Rect position, int r, int g, int b)
 {
-}
-
-StaticPlatform::StaticPlatform(Game* game, float x, float y, float width, float height) : Platform(game, x, y, width, height)
-{
-}
-
-void StaticPlatform::tick(int deltaTime)
-{
+	_transform = new TransformComponent(this, position);
+	
+	_rigidBody = new RigidBodyComponent(this, physSettings, true, false, true, false, false, true);
+	
+	_components[ComponentTypes::RectangleColliderComponent] = new RectangleColliderComponent(
+		this, 0, 0, position.getWidth(), position.getHeight());
+	
+	_components[ComponentTypes::ColorComponent] = new ColorComponent(this, r, g, b);
 }

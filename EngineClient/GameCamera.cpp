@@ -3,6 +3,11 @@
 GameCamera::GameCamera(Game* game)
 {
 	_game = game;
+
+	_attachedEntity = nullptr;
+
+	_x = 0.f;
+	_y = 0.f;
 }
 
 void GameCamera::attachToEntity(Entity* entity)

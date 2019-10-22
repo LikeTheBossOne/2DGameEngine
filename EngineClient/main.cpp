@@ -38,12 +38,14 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 			float y;
 			float width;
 			float height;
+			std::string texColorType;
 			bool texture;
-			float textureX;
-			float textureY;
-			float textureWidth;
-			float textureHeight;
+			bool color;
 			std::string textureName;
+			int colorR;
+			int colorG;
+			int colorB;
+			int textureAnimation;
 
 			std::string field;
 			std::istringstream entityStream(entityLine);
@@ -71,33 +73,37 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 
 			// HEIGHT
 			std::getline(entityStream, field, ',');
-			height= std::stof(field);
+			height = std::stof(field);
 
 			// Has Texture?
 			std::getline(entityStream, field, ',');
-			if (field == "true") texture = true;
-			else texture = false;
+			texColorType = field;
+
+			texture = texColorType == "Texture";
+			color = texColorType == "Color";
 			if (texture)
 			{
-				// TEXTURE X
-				std::getline(entityStream, field, ',');
-				textureX = std::stof(field);
-
-				// TEXTURE Y
-				std::getline(entityStream, field, ',');
-				textureY = std::stof(field);
-
-				// TEXTURE WIDTH
-				std::getline(entityStream, field, ',');
-				textureWidth = std::stof(field);
-
-				// TEXTURE HEIGHT
-				std::getline(entityStream, field, ',');
-				textureHeight = std::stof(field);
-
 				// TEXTURE NAME
 				std::getline(entityStream, field, ',');
 				textureName = field;
+
+				// TEXTURE ANIMATION NUMBER
+				std::getline(entityStream, field, ',');
+				textureAnimation = std::stoi(field);
+			}
+			else if (color)
+			{
+				// R
+				std::getline(entityStream, field, ',');
+				colorR = std::stoi(field);
+
+				// G
+				std::getline(entityStream, field, ',');
+				colorG = std::stoi(field);
+
+				// B
+				std::getline(entityStream, field, ',');
+				colorB = std::stoi(field);
 			}
 			
 			// Build entity
@@ -111,7 +117,11 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 				myPlayer->setSize(sf::Vector2f(width, height));
 				if (texture)
 				{
-					myPlayer->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
+					myPlayer->setTextureRect(game.getResourceManager()->getTextureRectForAnimation(textureName, textureAnimation));
+				}
+				else if (color)
+				{
+					myPlayer->setFillColor(sf::Color(colorR, colorG, colorB));
 				}
 				else
 				{
@@ -129,7 +139,11 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 				player->setSize(sf::Vector2f(width, height));
 				if (texture)
 				{
-					player->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
+					player->setTextureRect(game.getResourceManager()->getTextureRectForAnimation(textureName, textureAnimation));
+				}
+				else if (color)
+				{
+					player->setFillColor(sf::Color(colorR, colorG, colorB));
 				}
 				else
 				{
@@ -147,7 +161,11 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 				entity->setSize(sf::Vector2f(width, height));
 				if (texture)
 				{
-					entity->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
+					entity->setTextureRect(game.getResourceManager()->getTextureRectForAnimation(textureName, textureAnimation));
+				}
+				else if (color)
+				{
+					entity->setFillColor(sf::Color(colorR, colorG, colorB));
 				}
 				else
 				{
@@ -166,8 +184,12 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 					player->setPosition(x, y);
 					if (texture)
 					{
-						player->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
+						player->setTextureRect(game.getResourceManager()->getTextureRectForAnimation(textureName, textureAnimation));
 						player->setTexture(game.getResourceManager()->getTexturesMap()[textureName]);
+					}
+					else if (color)
+					{
+						player->setFillColor(sf::Color(colorR, colorG, colorB));
 					}
 					else
 					{
@@ -181,7 +203,7 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 						game.setShouldStartYet(true);
 					}
 				}
-				else if (type == "player") // new player joined
+				else if (type == "Player") // new player joined
 				{
 					playersLock.lock();
 					
@@ -189,8 +211,12 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 					player->setPosition(x, y);
 					if (texture)
 					{
-						player->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
+						player->setTextureRect(game.getResourceManager()->getTextureRectForAnimation(textureName, textureAnimation));
 						player->setTexture(game.getResourceManager()->getTexturesMap()[textureName]);
+					}
+					else if (color)
+					{
+						player->setFillColor(sf::Color(colorR, colorG, colorB));
 					}
 					else
 					{
@@ -200,7 +226,7 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 
 					playersLock.unlock();
 				}
-				else if (type == "entity")
+				else if (type == "StaticPlatform" || type == "PatternPlatform")
 				{
 					entitiesLock.lock();
 					
@@ -208,8 +234,12 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 					entity->setPosition(x, y);
 					if (texture)
 					{
-						entity->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
+						entity->setTextureRect(game.getResourceManager()->getTextureRectForAnimation(textureName, textureAnimation));
 						entity->setTexture(game.getResourceManager()->getTexturesMap()[textureName]);
+					}
+					else if (color)
+					{
+						entity->setFillColor(sf::Color(colorR, colorG, colorB));
 					}
 					else
 					{

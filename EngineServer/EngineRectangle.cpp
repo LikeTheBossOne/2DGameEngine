@@ -1,49 +1,40 @@
-#include "EntityRectangle.h"
+#include "EngineRectangle.h"
 #include <algorithm>
 
-EntityRectangle::EntityRectangle()
+EngineRectangle::EngineRectangle()
 {
-	_x = 0;
-	_y = 0;
-	_width = 0;
-	_height = 0;
+	_rect = Rect(0, 0, 0, 0);
 }
 
-EntityRectangle::EntityRectangle(float x, float y, float width, float height)
+EngineRectangle::EngineRectangle(Rect rect)
 {
-	_x = x;
-	_y = y;
-	_width = width;
-	_height = height;
+	_rect = rect;
 }
 
-EntityRectangle::EntityRectangle(float width, float height)
+EngineRectangle::EngineRectangle(float width, float height)
 {
-	_x = 0;
-	_y = 0;
-	_width = width;
-	_height = height;
+	_rect = Rect(0, 0, width, height);
 }
 
-void EntityRectangle::move(float x, float y)
+void EngineRectangle::move(float x, float y)
 {
-	_x += x;
-	_y += y;
+	_rect.setX(_rect.getX() + x);
+	_rect.setY(_rect.getY() + y);
 }
 
-void EntityRectangle::setPosition(float x, float y)
+void EngineRectangle::setPosition(float x, float y)
 {
-	_x = x;
-	_y = y;
+	_rect.setX(x);
+	_rect.setY(y);
 }
 
-bool EntityRectangle::intersects(EntityRectangle& otherRect, EntityRectangle& intersection)
+bool EngineRectangle::intersects(EngineRectangle otherRect, EngineRectangle& intersection)
 {
 	// Compute the min and max of the first rectangle on both axes
-	const float r1MinX = std::min(_x, _x + _width);
-	const float r1MaxX = std::max(_x, _x + _width);
-	const float r1MinY = std::min(_y, _y + _height);
-	const float r1MaxY = std::max(_y, _y + _height);
+	const float r1MinX = std::min(getX(), getX() + getWidth());
+	const float r1MaxX = std::max(getX(), getX() + getWidth());
+	const float r1MinY = std::min(getY(), getY() + getHeight());
+	const float r1MaxY = std::max(getY(), getY() + getHeight());
 
 	// Compute the min and max of the second rectangle on both axes
 	const float r2MinX = std::min(otherRect.getX(), otherRect.getX() + otherRect.getWidth());
@@ -60,12 +51,12 @@ bool EntityRectangle::intersects(EntityRectangle& otherRect, EntityRectangle& in
 	// If the intersection is valid (positive non zero area), then there is an intersection
 	if ((interLeft < interRight) && (interin_y < interBottom))
 	{
-		intersection = EntityRectangle(interLeft, interin_y, interRight - interLeft, interBottom - interin_y);
+		intersection = EngineRectangle(Rect(interLeft, interin_y, interRight - interLeft, interBottom - interin_y));
 		return true;
 	}
 	else
 	{
-		intersection = EntityRectangle(0, 0, 0, 0);
+		intersection = EngineRectangle(Rect(0, 0, 0, 0));
 		return false;
 	}
 }

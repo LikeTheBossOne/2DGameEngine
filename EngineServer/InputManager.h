@@ -1,26 +1,23 @@
 #pragma once
 #include <map>
 #include <vector>
-#include <mutex>
+#include "Inputs.h"
 
-
-class Game;
+class GameObject;
 
 class InputManager
 {
 public:
-	InputManager(Game* game);
+	InputManager();
 
-	void addPlayer(int GUID);
+	static InputManager* getInstance();
 
-	void setPlayerKeyPressed(int GUID, std::vector<bool> keys);
-	std::vector<bool> getPlayerKeysPressed(int GUID);
-	
+	void setInputs(int GUID, std::vector<bool> inputs);
+
+	std::vector<bool> getInputs(int GUID);
 private:
-	Game* _game;
+	static InputManager* _instance;
 
-	std::map<int, std::vector<bool>> _playerKeysPressed;
-
-	std::mutex _keyLock;
+	std::map<int, std::vector<bool>> _inputs;
 };
 

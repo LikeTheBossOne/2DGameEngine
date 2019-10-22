@@ -37,6 +37,18 @@
     <Filter Include="Header Files\Components">
       <UniqueIdentifier>{2a325929-3a16-401a-9e6d-fbccc6f0e70f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Utilities\Enums">
+      <UniqueIdentifier>{4f65e0ff-836e-44c8-8ae6-e44a57d0ff03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities\HelperObjects">
+      <UniqueIdentifier>{725b46dc-59cb-4e61-9569-4858ccccd52c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Rendering">
+      <UniqueIdentifier>{e4337b06-d09c-4f41-b01d-74e020521447}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Rendering">
+      <UniqueIdentifier>{cd457eb6-37f5-47c1-982c-2bbc4eecb9c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -69,16 +81,22 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="TransformComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GenericComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorComponent.cpp">
+      <Filter>Source Files\Components\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureComponent.cpp">
+      <Filter>Source Files\Components\Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Pattern.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="PatternTypes.h">
-      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Header Files\Entities</Filter>
@@ -88,9 +106,6 @@
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Orientation.h">
-      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="EntityManager.h">
       <Filter>Header Files\Managers</Filter>
@@ -109,6 +124,30 @@
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Orientation.h">
+      <Filter>Header Files\Utilities\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="PatternTypes.h">
+      <Filter>Header Files\Utilities\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Pattern.h">
+      <Filter>Header Files\Utilities\HelperObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentTypes.h">
+      <Filter>Header Files\Utilities\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="GenericComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorComponent.h">
+      <Filter>Header Files\Components\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureComponent.h">
+      <Filter>Header Files\Components\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
