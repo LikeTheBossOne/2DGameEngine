@@ -11,4 +11,5 @@ enum class ComponentTypes
 	RigidBodyComponent,
 	TextureComponent,
 	ColorComponent,
+	SideBoundaryComponent,
 };

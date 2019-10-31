@@ -9,6 +9,7 @@ RigidBodyComponent::RigidBodyComponent(GameObject* gameObject, PhysicsEngineSett
 	_physicsEngineSettings = physicsEngineSettings;
 	
 	_isStatic = false;
+	_ignoreCollisions = false;
 
 	_useGravity = false;
 	_isStickySurface = false;
@@ -20,12 +21,13 @@ RigidBodyComponent::RigidBodyComponent(GameObject* gameObject, PhysicsEngineSett
 }
 
 RigidBodyComponent::RigidBodyComponent(GameObject* gameObject, PhysicsEngineSettings* physicsEngineSettings,
-                                       bool isStatic, bool useGravity, bool isSticky,
+                                       bool isStatic, bool ignoreCollisions, bool useGravity, bool isSticky,
                                        bool canStickToSurface, bool isPushable, bool canPush) : GenericComponent(gameObject)
 {
 	_physicsEngineSettings = physicsEngineSettings;
 	
 	_isStatic = isStatic;
+	_ignoreCollisions = ignoreCollisions;
 
 	_useGravity = useGravity;
 	_isStickySurface = isSticky;

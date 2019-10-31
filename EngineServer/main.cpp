@@ -22,7 +22,8 @@ void reqRepCommunication(Game& game, zmq::context_t& context)
 		if (requestString == "OPEN")
 		{
 			// Create Player for client
-			Player* clientsPlayer = new Player(game.getEntityManager()->getPhysicsEngineSettings(), Rect(20, 400, 36, 64), "lance");
+			Player* clientsPlayer = new Player(game.getEntityManager()->getPhysicsEngineSettings(), 36, 64, "lance",
+			                                   game.getEntityManager()->getSpawns()[0]);
 			InputManager::getInstance()->setInputs(clientsPlayer->getGUID(), std::vector<bool>(3, false));
 			game.getEntityManager()->addEntity(clientsPlayer);
 

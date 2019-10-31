@@ -7,17 +7,20 @@
 #include "MovementComponent.h"
 #include "PhysicsEngineSettings.h"
 #include "TextureComponent.h"
+#include "DieComponent.h"
+#include "SpawnZone.h"
 
-Player::Player(PhysicsEngineSettings* physSettings, Rect position, std::string textureName)
+Player::Player(PhysicsEngineSettings* physSettings, float width, float height, std::string textureName, SpawnZone* spawn)
 {
-	_transform = new TransformComponent(this, position);
+	_transform = new TransformComponent(this,
+		Rect(spawn->getTransform()->getPositionX(), spawn->getTransform()->getPositionX(), width, height), true);
 
-	_rigidBody = new RigidBodyComponent(this, physSettings, false, true, false, true, true, false);
+	_rigidBody = new RigidBodyComponent(this, physSettings, false, false, true, false, true, true, false);
 
 
 	// Initialize Collider
 	_components[ComponentTypes::RectangleColliderComponent] = new RectangleColliderComponent(
-		this, 0, 0, position.getWidth(), position.getHeight());
+		this, 0, 0, width, height);
 
 	// Initialize Movement
 	_components[ComponentTypes::MovementComponent] = new MovementComponent(this);
@@ -30,4 +33,7 @@ Player::Player(PhysicsEngineSettings* physSettings, Rect position, std::string t
 
 	// Initialize Texture
 	_components[ComponentTypes::TextureComponent] = new TextureComponent(this, textureName);
+
+	// Initialize Die Component
+	_components[ComponentTypes::DieComponent] = new DieComponent(this, true, spawn);
 }

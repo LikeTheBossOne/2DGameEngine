@@ -1,10 +1,12 @@
 #include "TransformComponent.h"
 #include "MovementComponent.h"
 
-TransformComponent::TransformComponent(GameObject* gameObject, Rect position) : GenericComponent(gameObject)
+TransformComponent::TransformComponent(GameObject* gameObject, Rect position, bool isVisible) : GenericComponent(gameObject)
 {	
 	_position = position;
 
+	_isVisible = isVisible;
+	
 	_prevX = position.getX();
 	_prevY = position.getY();
 }

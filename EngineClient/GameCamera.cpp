@@ -1,26 +1,13 @@
 #include "GameCamera.h"
 
-GameCamera::GameCamera(Game* game)
+GameCamera::GameCamera()
 {
-	_game = game;
-
-	_attachedEntity = nullptr;
-
-	_x = 0.f;
-	_y = 0.f;
+	_offsetX = 0;
+	_offsetY = 0;
 }
 
-void GameCamera::attachToEntity(Entity* entity)
+void GameCamera::move(float x, float y)
 {
-	_attachedEntity = entity;
-}
-
-float GameCamera::getX()
-{
-	return 0.f;
-}
-
-float GameCamera::getY()
-{
-	return 0.f;
+	_offsetX += x;
+	_offsetY += y;
 }

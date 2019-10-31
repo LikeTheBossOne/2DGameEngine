@@ -11,9 +11,9 @@
 PatternPlatform::PatternPlatform(PhysicsEngineSettings* physSettings, Rect position, int r, int g, int b,
 	std::vector<Pattern*> patterns)
 {
-	_transform = new TransformComponent(this, position);
+	_transform = new TransformComponent(this, position, true);
 
-	_rigidBody = new RigidBodyComponent(this, physSettings, false, false, true, false, false, true);
+	_rigidBody = new RigidBodyComponent(this, physSettings, false, false, false, true, false, false, true);
 
 	_components[ComponentTypes::RectangleColliderComponent] = new RectangleColliderComponent(
 		this, 0, 0, position.getWidth(), position.getHeight());

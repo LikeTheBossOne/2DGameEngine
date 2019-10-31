@@ -6,6 +6,7 @@
 #include "TransformComponent.h"
 #include <iostream>
 #include "JumpComponent.h"
+#include "DieComponent.h"
 
 CollisionsManager::CollisionsManager()
 = default;
@@ -17,8 +18,14 @@ void CollisionsManager::update(std::map<int, GameObject*> entities, int totalEnt
 	std::vector<bool> hits(totalEntitiesToDate * totalEntitiesToDate, false);
 	for (const std::pair<int, GameObject*> entitiesPair : entities)
 	{
+		// if it ignores collisions skip it.
+		if (entitiesPair.second->getRigidBody()->getIgnoreCollisions()) continue;
+		
 		for (const std::pair<int, GameObject*> oEntitiesPair : entities)
 		{
+			// if it ignores collisions skip it.
+			if (oEntitiesPair.second->getRigidBody()->getIgnoreCollisions()) continue;
+			
 			// Check if pair has already been collison-checked
 			if (hits[entitiesPair.first * totalEntitiesToDate + oEntitiesPair.first]) continue;
 			hits[entitiesPair.first * totalEntitiesToDate + oEntitiesPair.first] = true;
@@ -34,8 +41,6 @@ void CollisionsManager::update(std::map<int, GameObject*> entities, int totalEnt
 			auto rigidBody2 = object2->getRigidBody();
 			
 			if (rigidBody1->isStatic() && rigidBody2->isStatic()) continue; // both static
-			if (!rigidBody1->getCanPush() && !rigidBody2->getCanPush()) continue; // both can't push
-			if (!rigidBody1->isPushable() && !rigidBody2->isPushable()) continue; // both can't be pushed
 
 
 			auto transform1 = object1->getTransform();
@@ -55,6 +60,7 @@ void CollisionsManager::update(std::map<int, GameObject*> entities, int totalEnt
 			EngineRectangle collisionRect;
 			if (collider1->getBounds().intersects(collider2->getBounds(), collisionRect))
 			{
+				// Check Movement Components
 				const auto gMovement1 = object1->getComponent(ComponentTypes::MovementComponent);
 				const bool canMove1 = gMovement1 != nullptr;
 				auto movement1 = dynamic_cast<MovementComponent*>(gMovement1);
@@ -63,6 +69,33 @@ void CollisionsManager::update(std::map<int, GameObject*> entities, int totalEnt
 				const bool canMove2 = gMovement1 != nullptr;
 				auto movement2 = dynamic_cast<MovementComponent*>(gMovement2);
 				
+				
+				// First check if Killer Object
+				const auto gKill1 = object1->getComponent(ComponentTypes::KillComponent);
+				const auto gKill2 = object2->getComponent(ComponentTypes::KillComponent);
+				const auto gDie1 = object1->getComponent(ComponentTypes::DieComponent);
+				const auto gDie2 = object2->getComponent(ComponentTypes::DieComponent);
+				if (gKill1 != nullptr && gDie2 != nullptr && movement2 != nullptr)
+				{
+					dynamic_cast<DieComponent*>(gDie2)->onDie();
+					movement2->setVelocityX(0);
+					movement2->setVelocityY(0);
+					continue;
+				}
+				if (gKill2 != nullptr && gDie1 != nullptr && movement1 != nullptr)
+				{
+					dynamic_cast<DieComponent*>(gDie1)->onDie();
+					movement1->setVelocityX(0);
+					movement1->setVelocityY(0);
+					continue;
+				}
+
+				// Skip if non-pushers
+				if (!rigidBody1->getCanPush() && !rigidBody2->getCanPush()) continue; // both can't push
+				if (!rigidBody1->isPushable() && !rigidBody2->isPushable()) continue; // both can't be pushed
+				
+
+				// Now we Handle Collision
 				// They both can push each other
 				if (rigidBody1->isPushable() && rigidBody1->getCanPush() && rigidBody2->isPushable() && rigidBody2->
 					getCanPush() && canMove1 && canMove2)

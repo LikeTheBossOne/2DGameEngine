@@ -6,6 +6,9 @@
 #include "RigidBodyComponent.h"
 #include "CollisionsManager.h"
 #include "TransformComponent.h"
+#include "MovementComponent.h"
+#include <iostream>
+#include "SpawnZone.h"
 
 EntityManager::EntityManager(Game* game)
 {
@@ -21,6 +24,8 @@ EntityManager::EntityManager(Game* game)
 
 	_entities = std::map<int, GameObject*>();
 	_totalEntitiesToDate = 0;
+
+	_spawns = std::vector<SpawnZone*>();
 }
 
 void EntityManager::addEntity(GameObject* entity)
@@ -41,6 +46,11 @@ void EntityManager::deleteEntity(int GUID)
 	_entities.erase(GUID);
 
 	_entitiesLock.unlock();
+}
+
+void EntityManager::addSpawn(SpawnZone* spawn)
+{
+	_spawns.emplace_back(spawn);
 }
 
 std::map<int, GameObject*> EntityManager::getEntities()
@@ -76,7 +86,7 @@ void EntityManager::update(int deltaTime)
 	for (const std::pair<int, GameObject*> entity : currentEntities)
 	{
 		auto object = entity.second;
-		if (object->getRigidBody()->getCanStickToSurface())
+		if (!object->getRigidBody()->getCanStickToSurface())
 		{
 			// Update prevX and prevY
 			TransformComponent* transform = object->getTransform();
@@ -121,7 +131,7 @@ void EntityManager::update(int deltaTime)
 	for (const std::pair<int, GameObject*> entity : currentEntities)
 	{
 		auto object = entity.second;
-		if (!object->getRigidBody()->getCanStickToSurface())
+		if (object->getRigidBody()->getCanStickToSurface())
 		{
 			// Update prevX and prevY
 			TransformComponent* transform = object->getTransform();
@@ -137,7 +147,7 @@ void EntityManager::update(int deltaTime)
 	for (const std::pair<int, GameObject*> entity : currentEntities)
 	{
 		auto object = entity.second;
-		if (!object->getRigidBody()->getCanStickToSurface())
+		if (object->getRigidBody()->getCanStickToSurface())
 		{
 			// Let JumpComponent set MovementComponent
 			auto gComponent = object->getComponent(ComponentTypes::JumpComponent);

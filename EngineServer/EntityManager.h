@@ -7,18 +7,21 @@ class GameObject;
 class Game;
 class CollisionsManager;
 class PhysicsEngineSettings;
+class SpawnZone;
 
 class EntityManager
 {
 public:
 	EntityManager(Game* game);
 
+	void update(int deltaTime);
+	
 	void addEntity(GameObject* entity);
 	void deleteEntity(int GUID);
+	void addSpawn(SpawnZone* spawn);
 
 	std::map<int, GameObject*> getEntities();
-	
-	void update(int deltaTime);
+	std::vector<SpawnZone*> getSpawns() { return _spawns; }
 
 	PhysicsEngineSettings* getPhysicsEngineSettings() { return _physicsEngineSettings; }
 private:
@@ -30,6 +33,8 @@ private:
 	
 	std::map<int, GameObject*> _entities;
 	int _totalEntitiesToDate;
+
+	std::vector<SpawnZone*> _spawns;
 
 	std::mutex _entitiesLock;
 };

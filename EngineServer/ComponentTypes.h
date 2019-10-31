@@ -11,4 +11,8 @@ enum class ComponentTypes
 	RigidBodyComponent,
 	TextureComponent,
 	ColorComponent,
+	KillComponent,
+	DieComponent,
+	SpawnComponent,
+	SideBoundaryComponent,
 };

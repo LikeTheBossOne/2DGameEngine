@@ -133,8 +133,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ColorComponent.cpp" />
-    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
@@ -143,24 +141,31 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pattern.cpp" />
     <ClCompile Include="GameTime.cpp" />
-    <ClCompile Include="TextureComponent.cpp" />
+    <ClCompile Include="PatternPlatform.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SideBoundary.cpp" />
+    <ClCompile Include="SideBoundaryComponent.cpp" />
+    <ClCompile Include="StaticPlatform.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Timeline.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ColorComponent.h" />
     <ClInclude Include="ComponentTypes.h" />
-    <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameObjectTypes.h" />
     <ClInclude Include="GenericComponent.h" />
     <ClInclude Include="Orientation.h" />
     <ClInclude Include="Pattern.h" />
+    <ClInclude Include="PatternPlatform.h" />
     <ClInclude Include="PatternTypes.h" />
-    <ClInclude Include="TextureComponent.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="SideBoundary.h" />
+    <ClInclude Include="SideBoundaryComponent.h" />
+    <ClInclude Include="StaticPlatform.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ResourceManager.h" />

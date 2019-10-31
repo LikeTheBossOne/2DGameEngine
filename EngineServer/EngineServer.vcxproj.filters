@@ -88,6 +88,18 @@
     <Filter Include="Header Files\WorldSettings">
       <UniqueIdentifier>{8a3eb914-d95c-4f14-95f2-18f1d299fa6f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\Health">
+      <UniqueIdentifier>{e44be212-c94e-4e6d-859e-51b0073ddf61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Health">
+      <UniqueIdentifier>{5cb9c178-1007-49ad-bae7-661dbf125b55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\Zones">
+      <UniqueIdentifier>{0d84dfc4-6c9e-4882-bcdf-9b3652e53bc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Zones">
+      <UniqueIdentifier>{3fc232d9-fa5e-4b45-8b73-c86ea920ea06}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -164,6 +176,27 @@
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="KillComponent.cpp">
+      <Filter>Source Files\Components\Health</Filter>
+    </ClCompile>
+    <ClCompile Include="DieComponent.cpp">
+      <Filter>Source Files\Components\Health</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnComponent.cpp">
+      <Filter>Source Files\Components\Health</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnZone.cpp">
+      <Filter>Source Files\Entities\Zones</Filter>
+    </ClCompile>
+    <ClCompile Include="DeathZone.cpp">
+      <Filter>Source Files\Entities\Zones</Filter>
+    </ClCompile>
+    <ClCompile Include="SideBoundaryComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SideBoundary.cpp">
+      <Filter>Source Files\Entities\Zones</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -253,6 +286,27 @@
     </ClInclude>
     <ClInclude Include="ColorComponent.h">
       <Filter>Header Files\Components\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="KillComponent.h">
+      <Filter>Header Files\Components\Health</Filter>
+    </ClInclude>
+    <ClInclude Include="DieComponent.h">
+      <Filter>Header Files\Components\Health</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnComponent.h">
+      <Filter>Header Files\Components\Health</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnZone.h">
+      <Filter>Header Files\Entities\Zones</Filter>
+    </ClInclude>
+    <ClInclude Include="DeathZone.h">
+      <Filter>Header Files\Entities\Zones</Filter>
+    </ClInclude>
+    <ClInclude Include="SideBoundaryComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SideBoundary.h">
+      <Filter>Header Files\Entities\Zones</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

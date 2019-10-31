@@ -2,11 +2,7 @@
 
 
 
-GameObject::GameObject()
+GameObject::GameObject(int GUID)
 {
-}
-
-
-GameObject::~GameObject()
-{
+	_GUID = GUID;
 }

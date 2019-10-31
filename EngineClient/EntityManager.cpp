@@ -1,28 +1,41 @@
 #include "EntityManager.h"
 #include <SFML/Graphics.hpp>
-#include "Entity.h"
+#include "GameObject.h"
 #include "Player.h"
+#include "TransformComponent.h"
+#include "GameCamera.h"
+#include "SideBoundary.h"
+#include "SideBoundaryComponent.h"
+#include "Settings.h"
 
 EntityManager::EntityManager(Game* game)
 {
 	_game = game;
+
+	_gameCamera = new GameCamera();
 	
-	_entities = std::map<int, Entity*>();
-	_players = std::map<int, Entity*>();
+	_entities = std::map<int, GameObject*>();
+	_sideBoundaries = std::map<int, SideBoundary*>();
+	_players = std::map<int, Player*>();
 	_myPlayer = nullptr;
 }
 
-void EntityManager::setEntity(int GUID, Entity* entity)
+void EntityManager::setEntity(int GUID, GameObject* entity)
 {
 	_entities[GUID] = entity;
 }
 
-void EntityManager::setPlayer(int GUID, Entity* entity)
+void EntityManager::addSideBoundary(int GUID, SideBoundary* sideBoundary)
+{
+	_sideBoundaries[GUID] = sideBoundary;
+}
+
+void EntityManager::setPlayer(int GUID, Player* entity)
 {
 	_players[GUID] = entity;
 }
 
-void EntityManager::setMyPlayer(Entity* player)
+void EntityManager::setMyPlayer(Player* player)
 {
 	_myPlayer = player;
 }
@@ -34,25 +47,72 @@ void EntityManager::deletePlayer(int GUID, std::mutex& playersLock)
 	playersLock.unlock();
 }
 
+void EntityManager::update(std::mutex& myPlayerLock)
+{
+	// Detect Collisions with SideBoundaries
+	if (_myPlayer != nullptr)
+	{
+		auto transform = _myPlayer->getTransform();
+
+		while (transform->getPositionX() + transform->getWidth() < _gameCamera->getOffsetX() && transform->getPositionX() > 0)
+		{
+			_gameCamera->move(-WINDOW_WIDTH, 0);
+		}
+		for (std::pair<int, SideBoundary*> boundary : _sideBoundaries)
+		{
+			auto boundaryTransform = boundary.second->getTransform();
+			auto sideBoundary = dynamic_cast<SideBoundaryComponent*>(boundary.second->getComponent(ComponentTypes::SideBoundaryComponent));
+			
+			// Check collision
+			if (transform->getPositionX() + transform->getWidth() > boundaryTransform->getPositionX()
+				&& transform->getPositionX() < boundaryTransform->getPositionX())
+			{
+				// if right of boundary
+				if (_gameCamera->getOffsetX() >= boundaryTransform->getPositionX() && sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+				{
+					_gameCamera->move(-WINDOW_WIDTH, 0);
+				}
+				// if right of boundary
+				else if (_gameCamera->getOffsetX() < boundaryTransform->getPositionX() && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+				{
+					_gameCamera->setOffsetX(boundaryTransform->getPositionX());
+				}
+				break;
+			}
+		}
+	}
+}
+
 /**
  * Render Entities then Player
  */
 void EntityManager::draw(sf::RenderWindow& window, std::mutex& myPlayerLock, std::mutex& playersLock, std::mutex& entitiesLock)
 {
 	entitiesLock.lock();
-	for (std::pair<int, Entity*> ePair : _entities)
+	for (std::pair<int, GameObject*> ePair : _entities)
 	{
-		window.draw(*ePair.second);
+		// Only render if visible
+		if (ePair.second->getTransform()->isVisible())
+		{
+			sf::RectangleShape obj = sf::RectangleShape(*ePair.second->getSFRectangleShape());
+			obj.move(-_gameCamera->getOffsetX(), -_gameCamera->getOffsetY());
+			window.draw(obj);
+		}
 	}
 	entitiesLock.unlock();
 	playersLock.lock();
-	for (std::pair<int, Entity*> ePair : _players)
+	for (std::pair<int, Player*> ePair : _players)
 	{
-		window.draw(*ePair.second);
+		// Don't check visible on players (maybe in future)
+		sf::RectangleShape obj = sf::RectangleShape(*ePair.second->getSFRectangleShape());
+		obj.move(-_gameCamera->getOffsetX(), -_gameCamera->getOffsetY());
+		window.draw(obj);
 	}
 	playersLock.unlock();
 	myPlayerLock.lock();
-	window.draw(*_myPlayer);
+	sf::RectangleShape obj = sf::RectangleShape(*_myPlayer->getSFRectangleShape());
+	obj.move(-_gameCamera->getOffsetX(), -_gameCamera->getOffsetY());
+	window.draw(obj);
 	myPlayerLock.unlock();
 }
 

@@ -173,10 +173,10 @@ void Game::run(zmq::socket_t& socket, std::mutex& myPlayerLock, std::mutex& play
 		socket.recv(response);
 		auto responseString = std::string(static_cast<char*>(response.data()), response.size());
 
-
-		// Draw
+		// Update & Draw
 		if (_shouldStartYet)
 		{
+			_entityManager->update(myPlayerLock);
 			window.clear();
 			_entityManager->draw(window, myPlayerLock, playersLock, entitiesLock);
 			if (gameTime.getPaused())

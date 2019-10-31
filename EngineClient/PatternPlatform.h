@@ -1,28 +1,11 @@
 #pragma once
-#include "DynamicPlatform.h"
-#include "PatternTypes.h"
-#include "SFML/System/Time.hpp"
+#include <SFML/Graphics/Rect.hpp>
+#include "GameObject.h"
 
-class Pattern;
-
-class PatternPlatform : public DynamicPlatform
+class PatternPlatform : public GameObject
 {
 public:
-	PatternPlatform(Game* game, sf::Texture* texture, sf::Vector2f location, sf::Vector2f size, std::vector<Pattern>& patterns);
+	PatternPlatform(int GUID, sf::FloatRect location);
 
-	PatternPlatform(Game* game, sf::Vector2f location, sf::Vector2f size, std::vector<Pattern>& patterns);
-	void tick(int deltaTime) override;
-
-	Pattern getCurrentPattern();
-	float getCurrentVelocityX() override;
-	float getCurrentVelocityY() override;
-	PatternTypes getCurrentPatternType();
-private:
-	std::vector<Pattern> _patterns;
-	int _currentPattern;
-	int _patternGametimeCount;
-
-	float _startOfPatternX;
-	float _startOfPatternY;
+	GameObjectTypes getType() override { return GameObjectTypes::PatternPlatform; }
 };
-

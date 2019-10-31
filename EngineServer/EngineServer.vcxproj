@@ -131,7 +131,10 @@
   <ItemGroup>
     <ClCompile Include="CollisionsManager.cpp" />
     <ClCompile Include="ColorComponent.cpp" />
+    <ClCompile Include="DeathZone.cpp" />
+    <ClCompile Include="DieComponent.cpp" />
     <ClCompile Include="GenericComponent.cpp" />
+    <ClCompile Include="KillComponent.cpp" />
     <ClCompile Include="PlayerInputComponent.cpp" />
     <ClCompile Include="JumpComponent.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
@@ -150,6 +153,10 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="EngineRectangle.cpp" />
     <ClCompile Include="RigidBodyComponent.cpp" />
+    <ClCompile Include="SideBoundary.cpp" />
+    <ClCompile Include="SideBoundaryComponent.cpp" />
+    <ClCompile Include="SpawnComponent.cpp" />
+    <ClCompile Include="SpawnZone.cpp" />
     <ClCompile Include="StaticPlatform.cpp" />
     <ClCompile Include="TextureComponent.cpp" />
     <ClCompile Include="Timeline.cpp" />
@@ -158,8 +165,11 @@
   <ItemGroup>
     <ClInclude Include="CollisionsManager.h" />
     <ClInclude Include="ColorComponent.h" />
+    <ClInclude Include="DeathZone.h" />
+    <ClInclude Include="DieComponent.h" />
     <ClInclude Include="GenericComponent.h" />
     <ClInclude Include="ComponentTypes.h" />
+    <ClInclude Include="KillComponent.h" />
     <ClInclude Include="PlayerInputComponent.h" />
     <ClInclude Include="JumpComponent.h" />
     <ClInclude Include="MovementComponent.h" />
@@ -181,6 +191,10 @@
     <ClInclude Include="EngineRectangle.h" />
     <ClInclude Include="RigidBodyComponent.h" />
     <ClInclude Include="Settings.h" />
+    <ClInclude Include="SideBoundary.h" />
+    <ClInclude Include="SideBoundaryComponent.h" />
+    <ClInclude Include="SpawnComponent.h" />
+    <ClInclude Include="SpawnZone.h" />
     <ClInclude Include="StaticPlatform.h" />
     <ClInclude Include="TextureComponent.h" />
     <ClInclude Include="Timeline.h" />
