@@ -5,16 +5,16 @@ class Game;
 class GameCamera
 {
 public:
-	GameCamera(Game* game);
+	GameCamera();
 
-	void attachToEntity(Entity* entity);
-	float getX();
-	float getY();
-private:
-	Game* _game;
-
-	Entity* _attachedEntity;
+	void setOffsetX(float offsetX) { _offsetX = offsetX; }
+	void setOffsetY(float offsetY) { _offsetY = offsetY; }
+	void move(float x, float y);
 	
-	float _x;
-	float _y;
+	float getOffsetX() { return _offsetX; }
+	float getOffsetY() { return _offsetY; }
+private:
+	
+	float _offsetX;
+	float _offsetY;
 };

@@ -1,28 +1,30 @@
 #include "InputManager.h"
+#include "GameObject.h"
+#include "PlayerInputComponent.h"
 
-InputManager::InputManager(Game* game)
+InputManager* InputManager::_instance;
+
+InputManager::InputManager()
 {
-	_game = game;
-
-	_playerKeysPressed = std::map<int, std::vector<bool>>();
+	_inputs = std::map<int, std::vector<bool>>();
 }
 
-void InputManager::addPlayer(int GUID)
+InputManager* InputManager::getInstance()
 {
-	std::vector<bool> inputs = { false, false, false };
+	if (_instance == nullptr)
+	{
+		_instance = new InputManager();
+	}
 
-	_keyLock.lock();
-	_playerKeysPressed.emplace(GUID, inputs);
-	_keyLock.unlock();
+	return _instance;
 }
 
-void InputManager::setPlayerKeyPressed(int GUID, std::vector<bool> keys)
+void InputManager::setInputs(int GUID, std::vector<bool> inputs)
 {
-	_playerKeysPressed.at(GUID) = keys;
+	_inputs[GUID] = inputs;
 }
 
-
-std::vector<bool> InputManager::getPlayerKeysPressed(int GUID)
+std::vector<bool> InputManager::getInputs(int GUID)
 {
-	return _playerKeysPressed.at(GUID);
+	return _inputs[GUID];
 }

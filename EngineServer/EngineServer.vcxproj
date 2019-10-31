@@ -22,13 +22,13 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{602E7635-CBFC-4909-AD67-0B9E356487A2}</ProjectGuid>
     <RootNamespace>EngineServer</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -129,26 +129,57 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DynamicPlatform.cpp" />
-    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="CollisionsManager.cpp" />
+    <ClCompile Include="ColorComponent.cpp" />
+    <ClCompile Include="DeathZone.cpp" />
+    <ClCompile Include="DieComponent.cpp" />
+    <ClCompile Include="GenericComponent.cpp" />
+    <ClCompile Include="KillComponent.cpp" />
+    <ClCompile Include="PlayerInputComponent.cpp" />
+    <ClCompile Include="JumpComponent.cpp" />
+    <ClCompile Include="MovementComponent.cpp" />
+    <ClCompile Include="PatternComponent.cpp" />
+    <ClCompile Include="PhysicsEngineSettings.cpp" />
+    <ClCompile Include="Rect.cpp" />
+    <ClCompile Include="RectangleColliderComponent.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pattern.cpp" />
     <ClCompile Include="PatternPlatform.cpp" />
-    <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="EntityRectangle.cpp" />
+    <ClCompile Include="EngineRectangle.cpp" />
+    <ClCompile Include="RigidBodyComponent.cpp" />
+    <ClCompile Include="SideBoundary.cpp" />
+    <ClCompile Include="SideBoundaryComponent.cpp" />
+    <ClCompile Include="SpawnComponent.cpp" />
+    <ClCompile Include="SpawnZone.cpp" />
     <ClCompile Include="StaticPlatform.cpp" />
+    <ClCompile Include="TextureComponent.cpp" />
     <ClCompile Include="Timeline.cpp" />
+    <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DynamicPlatform.h" />
-    <ClInclude Include="Entity.h" />
+    <ClInclude Include="CollisionsManager.h" />
+    <ClInclude Include="ColorComponent.h" />
+    <ClInclude Include="DeathZone.h" />
+    <ClInclude Include="DieComponent.h" />
+    <ClInclude Include="GenericComponent.h" />
+    <ClInclude Include="ComponentTypes.h" />
+    <ClInclude Include="KillComponent.h" />
+    <ClInclude Include="PlayerInputComponent.h" />
+    <ClInclude Include="JumpComponent.h" />
+    <ClInclude Include="MovementComponent.h" />
+    <ClInclude Include="PatternComponent.h" />
+    <ClInclude Include="PhysicsEngineSettings.h" />
+    <ClInclude Include="Rect.h" />
+    <ClInclude Include="RectangleColliderComponent.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTime.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Inputs.h" />
@@ -156,12 +187,18 @@
     <ClInclude Include="Pattern.h" />
     <ClInclude Include="PatternPlatform.h" />
     <ClInclude Include="PatternTypes.h" />
-    <ClInclude Include="Platform.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="EntityRectangle.h" />
+    <ClInclude Include="EngineRectangle.h" />
+    <ClInclude Include="RigidBodyComponent.h" />
     <ClInclude Include="Settings.h" />
+    <ClInclude Include="SideBoundary.h" />
+    <ClInclude Include="SideBoundaryComponent.h" />
+    <ClInclude Include="SpawnComponent.h" />
+    <ClInclude Include="SpawnZone.h" />
     <ClInclude Include="StaticPlatform.h" />
+    <ClInclude Include="TextureComponent.h" />
     <ClInclude Include="Timeline.h" />
+    <ClInclude Include="TransformComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

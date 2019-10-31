@@ -40,9 +40,6 @@
     <Filter Include="Header Files\Entities\Platforms">
       <UniqueIdentifier>{4948e721-b52f-4a1e-b3ec-daf037e8278b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Entities\Platforms\Dynamic">
-      <UniqueIdentifier>{6dbd52cf-8ba9-4555-a78d-64eed3a4e4b9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utilities">
       <UniqueIdentifier>{a512f761-3851-40a5-a390-b0052ffbddf5}</UniqueIdentifier>
     </Filter>
@@ -52,8 +49,56 @@
     <Filter Include="Source Files\Entities\Platforms">
       <UniqueIdentifier>{d1e09f04-ee74-4965-9a63-14467a0494c0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Entities\Platforms\Dynamic">
-      <UniqueIdentifier>{7ef12737-82a3-43d8-ad51-0b9ece01f4d8}</UniqueIdentifier>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{66b55b05-76d9-4883-91ea-968b6f7104f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{9cc3d337-33a9-4f53-b87c-f93a04f2886c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Rendering">
+      <UniqueIdentifier>{871252d7-9209-407c-97fb-4e6fe37da621}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Physics">
+      <UniqueIdentifier>{5a9b0ba5-ee5e-4cbb-a0cd-e33bc7a98693}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Physics">
+      <UniqueIdentifier>{971b74c2-93b6-44f0-8b6c-8f5f59f2d410}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Rendering">
+      <UniqueIdentifier>{22cf017a-943a-4f6c-9242-0a831dd3436c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities\HelperObjects">
+      <UniqueIdentifier>{6ad8b54d-40f1-42ba-aebc-c9521f2cfd7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities\HelperObjects">
+      <UniqueIdentifier>{451e91e8-39d4-4408-ad45-4f5565e09ae1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities\Enums">
+      <UniqueIdentifier>{cd7cb99f-084b-4167-a637-fd051870bca9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Physics\Movement">
+      <UniqueIdentifier>{cff10e4d-af5e-41e3-9cb1-34cc19bac82b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Physics\Movement">
+      <UniqueIdentifier>{a0132482-e9a2-4a62-88b7-c925e5c69a04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\WorldSettings">
+      <UniqueIdentifier>{6e75a1ab-35fc-4c26-95e8-5704e4419551}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\WorldSettings">
+      <UniqueIdentifier>{8a3eb914-d95c-4f14-95f2-18f1d299fa6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Health">
+      <UniqueIdentifier>{e44be212-c94e-4e6d-859e-51b0073ddf61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Health">
+      <UniqueIdentifier>{5cb9c178-1007-49ad-bae7-661dbf125b55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\Zones">
+      <UniqueIdentifier>{0d84dfc4-6c9e-4882-bcdf-9b3652e53bc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Zones">
+      <UniqueIdentifier>{3fc232d9-fa5e-4b45-8b73-c86ea920ea06}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -63,26 +108,14 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DynamicPlatform.cpp">
-      <Filter>Source Files\Entities\Platforms\Dynamic</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Source Files\Entities</Filter>
-    </ClCompile>
     <ClCompile Include="EntityManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
     <ClCompile Include="GameTime.cpp">
       <Filter>Source Files\Time</Filter>
     </ClCompile>
-    <ClCompile Include="PatternPlatform.cpp">
-      <Filter>Source Files\Entities\Platforms\Dynamic</Filter>
-    </ClCompile>
     <ClCompile Include="Pattern.cpp">
       <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="Platform.cpp">
-      <Filter>Source Files\Entities\Platforms</Filter>
     </ClCompile>
     <ClCompile Include="StaticPlatform.cpp">
       <Filter>Source Files\Entities\Platforms</Filter>
@@ -93,34 +126,88 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Entities\Characters</Filter>
     </ClCompile>
+    <ClCompile Include="TransformComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureComponent.cpp">
+      <Filter>Source Files\Components\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="RectangleColliderComponent.cpp">
+      <Filter>Source Files\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBodyComponent.cpp">
+      <Filter>Source Files\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineRectangle.cpp">
+      <Filter>Source Files\Utilities\HelperObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="JumpComponent.cpp">
+      <Filter>Source Files\Components\Physics\Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="PatternComponent.cpp">
+      <Filter>Source Files\Components\Physics\Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementComponent.cpp">
+      <Filter>Source Files\Components\Physics\Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="PatternPlatform.cpp">
+      <Filter>Source Files\Entities\Platforms</Filter>
+    </ClCompile>
+    <ClCompile Include="Rect.cpp">
+      <Filter>Source Files\Utilities\HelperObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GenericComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsEngineSettings.cpp">
+      <Filter>Source Files\WorldSettings</Filter>
+    </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="EntityRectangle.cpp">
+    <ClCompile Include="CollisionsManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerInputComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorComponent.cpp">
+      <Filter>Source Files\Components\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
       <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="KillComponent.cpp">
+      <Filter>Source Files\Components\Health</Filter>
+    </ClCompile>
+    <ClCompile Include="DieComponent.cpp">
+      <Filter>Source Files\Components\Health</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnComponent.cpp">
+      <Filter>Source Files\Components\Health</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnZone.cpp">
+      <Filter>Source Files\Entities\Zones</Filter>
+    </ClCompile>
+    <ClCompile Include="DeathZone.cpp">
+      <Filter>Source Files\Entities\Zones</Filter>
+    </ClCompile>
+    <ClCompile Include="SideBoundaryComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SideBoundary.cpp">
+      <Filter>Source Files\Entities\Zones</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EntityManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Header Files\Entities\Characters</Filter>
     </ClInclude>
-    <ClInclude Include="Platform.h">
-      <Filter>Header Files\Entities\Platforms</Filter>
-    </ClInclude>
     <ClInclude Include="StaticPlatform.h">
       <Filter>Header Files\Entities\Platforms</Filter>
-    </ClInclude>
-    <ClInclude Include="PatternPlatform.h">
-      <Filter>Header Files\Entities\Platforms\Dynamic</Filter>
-    </ClInclude>
-    <ClInclude Include="DynamicPlatform.h">
-      <Filter>Header Files\Entities\Platforms\Dynamic</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
@@ -131,26 +218,95 @@
     <ClInclude Include="GameTime.h">
       <Filter>Header Files\Time</Filter>
     </ClInclude>
-    <ClInclude Include="Orientation.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
     <ClInclude Include="Pattern.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="PatternTypes.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Settings.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="RectangleColliderComponent.h">
+      <Filter>Header Files\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBodyComponent.h">
+      <Filter>Header Files\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureComponent.h">
+      <Filter>Header Files\Components\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineRectangle.h">
+      <Filter>Header Files\Utilities\HelperObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Orientation.h">
+      <Filter>Header Files\Utilities\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Inputs.h">
+      <Filter>Header Files\Utilities\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="PatternTypes.h">
+      <Filter>Header Files\Utilities\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="PatternComponent.h">
+      <Filter>Header Files\Components\Physics\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpComponent.h">
+      <Filter>Header Files\Components\Physics\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementComponent.h">
+      <Filter>Header Files\Components\Physics\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="PatternPlatform.h">
+      <Filter>Header Files\Entities\Platforms</Filter>
+    </ClInclude>
+    <ClInclude Include="Rect.h">
+      <Filter>Header Files\Utilities\HelperObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentTypes.h">
+      <Filter>Header Files\Utilities\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="GenericComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsEngineSettings.h">
+      <Filter>Header Files\WorldSettings</Filter>
+    </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="Inputs.h">
-      <Filter>Header Files\Utilities</Filter>
+    <ClInclude Include="CollisionsManager.h">
+      <Filter>Header Files\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="EntityRectangle.h">
-      <Filter>Header Files\Entities</Filter>
+    <ClInclude Include="PlayerInputComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorComponent.h">
+      <Filter>Header Files\Components\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="KillComponent.h">
+      <Filter>Header Files\Components\Health</Filter>
+    </ClInclude>
+    <ClInclude Include="DieComponent.h">
+      <Filter>Header Files\Components\Health</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnComponent.h">
+      <Filter>Header Files\Components\Health</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnZone.h">
+      <Filter>Header Files\Entities\Zones</Filter>
+    </ClInclude>
+    <ClInclude Include="DeathZone.h">
+      <Filter>Header Files\Entities\Zones</Filter>
+    </ClInclude>
+    <ClInclude Include="SideBoundaryComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SideBoundary.h">
+      <Filter>Header Files\Entities\Zones</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

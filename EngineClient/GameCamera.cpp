@@ -1,17 +1,13 @@
 #include "GameCamera.h"
 
-GameCamera::GameCamera(Game* game)
+GameCamera::GameCamera()
 {
+	_offsetX = 0;
+	_offsetY = 0;
 }
 
-void GameCamera::attachToEntity(Entity* entity)
+void GameCamera::move(float x, float y)
 {
-}
-
-float GameCamera::getX()
-{
-}
-
-float GameCamera::getY()
-{
+	_offsetX += x;
+	_offsetY += y;
 }

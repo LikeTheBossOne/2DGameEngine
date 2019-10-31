@@ -1,10 +1,14 @@
 #include "Game.h"
-#include "Settings.h"
 #include <zmq.hpp>
 #include <thread>
 #include "EntityManager.h"
 #include "ResourceManager.h"
-#include "Entity.h"
+#include "GameObject.h"
+#include "Player.h"
+#include "StaticPlatform.h"
+#include "PatternPlatform.h"
+#include "SideBoundary.h"
+#include "TransformComponent.h"
 
 const std::string REQREP_PORT = "tcp://localhost:5555";
 const std::string PUBSUB_PORT = "tcp://localhost:5560";
@@ -38,12 +42,14 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 			float y;
 			float width;
 			float height;
+			std::string texColorType;
 			bool texture;
-			float textureX;
-			float textureY;
-			float textureWidth;
-			float textureHeight;
+			bool color;
 			std::string textureName;
+			int colorR;
+			int colorG;
+			int colorB;
+			int textureAnimation;
 
 			std::string field;
 			std::istringstream entityStream(entityLine);
@@ -56,48 +62,65 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 			// TYPE
 			std::getline(entityStream, field, ',');
 			type = field;
-			
-			// X
-			std::getline(entityStream, field, ',');
-			x = std::stof(field);
 
-			// Y
-			std::getline(entityStream, field, ',');
-			y = std::stof(field);
-
-			// WIDTH
-			std::getline(entityStream, field, ',');
-			width = std::stof(field);
-
-			// HEIGHT
-			std::getline(entityStream, field, ',');
-			height= std::stof(field);
-
-			// Has Texture?
-			std::getline(entityStream, field, ',');
-			if (field == "true") texture = true;
-			else texture = false;
-			if (texture)
+			if (type == "SideBoundary")
 			{
-				// TEXTURE X
+				// X
 				std::getline(entityStream, field, ',');
-				textureX = std::stof(field);
+				x = std::stof(field);
 
-				// TEXTURE Y
+				// SCENE SHIFT WIDTH
 				std::getline(entityStream, field, ',');
-				textureY = std::stof(field);
+				width = std::stof(field);
+			}
+			else
+			{
+				// X
+				std::getline(entityStream, field, ',');
+				x = std::stof(field);
 
-				// TEXTURE WIDTH
+				// Y
 				std::getline(entityStream, field, ',');
-				textureWidth = std::stof(field);
+				y = std::stof(field);
 
-				// TEXTURE HEIGHT
+				// WIDTH
 				std::getline(entityStream, field, ',');
-				textureHeight = std::stof(field);
+				width = std::stof(field);
 
-				// TEXTURE NAME
+				// HEIGHT
 				std::getline(entityStream, field, ',');
-				textureName = field;
+				height = std::stof(field);
+
+				// Has Texture?
+				std::getline(entityStream, field, ',');
+				texColorType = field;
+
+				texture = texColorType == "Texture";
+				color = texColorType == "Color";
+				if (texture)
+				{
+					// TEXTURE NAME
+					std::getline(entityStream, field, ',');
+					textureName = field;
+
+					// TEXTURE ANIMATION NUMBER
+					std::getline(entityStream, field, ',');
+					textureAnimation = std::stoi(field);
+				}
+				else if (color)
+				{
+					// R
+					std::getline(entityStream, field, ',');
+					colorR = std::stoi(field);
+
+					// G
+					std::getline(entityStream, field, ',');
+					colorG = std::stoi(field);
+
+					// B
+					std::getline(entityStream, field, ',');
+					colorB = std::stoi(field);
+				}
 			}
 			
 			// Build entity
@@ -106,16 +129,22 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 			{
 				myPlayerLock.lock();
 				
-				Entity* myPlayer = game.getEntityManager()->getMyPlayer();
-				myPlayer->setPosition(x, y);
-				myPlayer->setSize(sf::Vector2f(width, height));
+				Player* myPlayer = game.getEntityManager()->getMyPlayer();
+				myPlayer->getSFRectangleShape()->setPosition(x, y);
+				myPlayer->getTransform()->setPositionX(x);
+				myPlayer->getTransform()->setPositionY(y);
+				myPlayer->getSFRectangleShape()->setSize(sf::Vector2f(width, height));
 				if (texture)
 				{
-					myPlayer->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
+					myPlayer->getSFRectangleShape()->setTextureRect(game.getResourceManager()->getTextureRectForAnimation(textureName, textureAnimation));
+				}
+				else if (color)
+				{
+					myPlayer->getSFRectangleShape()->setFillColor(sf::Color(colorR, colorG, colorB));
 				}
 				else
 				{
-					myPlayer->setFillColor(sf::Color(150, 50, 250));
+					myPlayer->getSFRectangleShape()->setFillColor(sf::Color(150, 50, 250));
 				}
 				
 				myPlayerLock.unlock();
@@ -124,100 +153,151 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 			{
 				playersLock.lock();
 				
-				Entity* player = game.getEntityManager()->getPlayers().at(guid);
-				player->setPosition(x, y);
-				player->setSize(sf::Vector2f(width, height));
+				Player* player = game.getEntityManager()->getPlayers().at(guid);
+				player->getSFRectangleShape()->setPosition(x, y);
+				player->getTransform()->setPositionX(x);
+				player->getTransform()->setPositionY(y);
+				player->getSFRectangleShape()->setSize(sf::Vector2f(width, height));
 				if (texture)
 				{
-					player->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
+					player->getSFRectangleShape()->setTextureRect(game.getResourceManager()->getTextureRectForAnimation(textureName, textureAnimation));
+				}
+				else if (color)
+				{
+					player->getSFRectangleShape()->setFillColor(sf::Color(colorR, colorG, colorB));
 				}
 				else
 				{
-					player->setFillColor(sf::Color(150, 50, 250));
+					player->getSFRectangleShape()->setFillColor(sf::Color(150, 50, 250));
 				}
 
 				playersLock.unlock();
 			}
 			else if (game.getEntityManager()->getEntities().count(guid) == 1) 
 			{
-				entitiesLock.lock();
 				
-				Entity* entity = game.getEntityManager()->getEntities().at(guid);
-				entity->setPosition(x, y);
-				entity->setSize(sf::Vector2f(width, height));
+				entitiesLock.lock();
+				GameObject* entity = game.getEntityManager()->getEntities().at(guid);
+				entity->getSFRectangleShape()->setPosition(x, y);
+				entity->getTransform()->setPositionX(x);
+				entity->getTransform()->setPositionY(y);
+				entity->getSFRectangleShape()->setSize(sf::Vector2f(width, height));
 				if (texture)
 				{
-					entity->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
+					entity->getSFRectangleShape()->setTextureRect(game.getResourceManager()->getTextureRectForAnimation(textureName, textureAnimation));
+				}
+				else if (color)
+				{
+					entity->getSFRectangleShape()->setFillColor(sf::Color(colorR, colorG, colorB));
 				}
 				else
 				{
-					entity->setFillColor(sf::Color(150, 50, 250));
+					entity->getSFRectangleShape()->setFillColor(sf::Color(150, 50, 250));
 				}
 
 				entitiesLock.unlock();
+			}
+			else if (game.getEntityManager()->getSideBoundaries().count(guid) == 1)
+			{
+				// Do nothing if boundary already exists
 			}
 			else // Doesn't exist yet
 			{
 				if (guid == game.getPlayerNumber()) // This is the first time myPlayer is being instantiated
 				{
-					myPlayerLock.lock();
-					
-					Entity* player = new Entity(&game, guid, sf::Vector2f(width, height));
-					player->setPosition(x, y);
+					Player* player = new Player(guid, sf::FloatRect(x, y, width, height));
 					if (texture)
 					{
-						player->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
-						player->setTexture(game.getResourceManager()->getTexturesMap()[textureName]);
+						player->getSFRectangleShape()->setTextureRect(game.getResourceManager()->getTextureRectForAnimation(textureName, textureAnimation));
+						player->getSFRectangleShape()->setTexture(game.getResourceManager()->getTexturesMap()[textureName]);
+					}
+					else if (color)
+					{
+						player->getSFRectangleShape()->setFillColor(sf::Color(colorR, colorG, colorB));
 					}
 					else
 					{
-						player->setFillColor(sf::Color(150, 50, 250));
+						player->getSFRectangleShape()->setFillColor(sf::Color(150, 50, 250));
 					}
+					
+					myPlayerLock.lock();
 					game.getEntityManager()->setMyPlayer(player);
-
 					myPlayerLock.unlock();
+					
 					if (!game.getShouldStartYet())
 					{
 						game.setShouldStartYet(true);
 					}
 				}
-				else if (type == "player") // new player joined
+				else if (type == "Player") // new player joined
 				{
-					playersLock.lock();
-					
-					Entity* player = new Entity(&game, guid, sf::Vector2f(width, height));
-					player->setPosition(x, y);
+					Player* player = new Player(guid, sf::FloatRect(x, y, width, height));
 					if (texture)
 					{
-						player->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
-						player->setTexture(game.getResourceManager()->getTexturesMap()[textureName]);
+						player->getSFRectangleShape()->setTextureRect(game.getResourceManager()->getTextureRectForAnimation(textureName, textureAnimation));
+						player->getSFRectangleShape()->setTexture(game.getResourceManager()->getTexturesMap()[textureName]);
+					}
+					else if (color)
+					{
+						player->getSFRectangleShape()->setFillColor(sf::Color(colorR, colorG, colorB));
 					}
 					else
 					{
-						player->setFillColor(sf::Color(150, 50, 250));
+						player->getSFRectangleShape()->setFillColor(sf::Color(150, 50, 250));
 					}
-					game.getEntityManager()->setPlayer(guid, player);
 
+					playersLock.lock();
+					game.getEntityManager()->setPlayer(guid, player);
 					playersLock.unlock();
 				}
-				else if (type == "entity")
+				else if (type == "StaticPlatform")
 				{
 					entitiesLock.lock();
 					
-					Entity* entity = new Entity(&game, guid, sf::Vector2f(width, height));
-					entity->setPosition(x, y);
+					StaticPlatform* entity = new StaticPlatform(guid, sf::FloatRect(x, y, width, height));
 					if (texture)
 					{
-						entity->setTextureRect(sf::IntRect(textureX, textureY, textureWidth, textureHeight));
-						entity->setTexture(game.getResourceManager()->getTexturesMap()[textureName]);
+						entity->getSFRectangleShape()->setTextureRect(game.getResourceManager()->getTextureRectForAnimation(textureName, textureAnimation));
+						entity->getSFRectangleShape()->setTexture(game.getResourceManager()->getTexturesMap()[textureName]);
+					}
+					else if (color)
+					{
+						entity->getSFRectangleShape()->setFillColor(sf::Color(colorR, colorG, colorB));
 					}
 					else
 					{
-						entity->setFillColor(sf::Color(150, 50, 250));
+						entity->getSFRectangleShape()->setFillColor(sf::Color(150, 50, 250));
 					}
 					game.getEntityManager()->setEntity(guid, entity);
 
 					entitiesLock.unlock();
+				}
+				else if (type == "PatternPlatform")
+				{
+					PatternPlatform* entity = new PatternPlatform(guid, sf::FloatRect(x, y, width, height));
+					if (texture)
+					{
+						entity->getSFRectangleShape()->setTextureRect(game.getResourceManager()->getTextureRectForAnimation(textureName, textureAnimation));
+						entity->getSFRectangleShape()->setTexture(game.getResourceManager()->getTexturesMap()[textureName]);
+					}
+					else if (color)
+					{
+						entity->getSFRectangleShape()->setFillColor(sf::Color(colorR, colorG, colorB));
+					}
+					else
+					{
+						entity->getSFRectangleShape()->setFillColor(sf::Color(150, 50, 250));
+					}
+					
+					entitiesLock.lock();
+					game.getEntityManager()->setEntity(guid, entity);
+					entitiesLock.unlock();
+				}
+				else if (type == "SideBoundary")
+				{
+					auto boundary = new SideBoundary(guid, x, width);
+
+					game.getEntityManager()->addSideBoundary(guid, boundary);
 				}
 			}
 

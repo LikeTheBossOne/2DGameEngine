@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Header Files\Entities">
       <UniqueIdentifier>{abb6417c-3c51-4a3a-b810-b8055068554b}</UniqueIdentifier>
     </Filter>
@@ -31,13 +27,44 @@
     <Filter Include="Header Files\Utilities">
       <UniqueIdentifier>{cae973d3-82de-4959-9794-b90531f1db03}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{8c9581f4-c5f0-4d1d-9b65-df55e394bac2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{2a325929-3a16-401a-9e6d-fbccc6f0e70f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities\Enums">
+      <UniqueIdentifier>{4f65e0ff-836e-44c8-8ae6-e44a57d0ff03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities\HelperObjects">
+      <UniqueIdentifier>{725b46dc-59cb-4e61-9569-4858ccccd52c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Platforms">
+      <UniqueIdentifier>{8557d622-97e1-4ab7-a7a0-ff5cab4a4712}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Characters">
+      <UniqueIdentifier>{dd1befb0-99bf-4a95-b7d9-199635d6125f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Boundaries">
+      <UniqueIdentifier>{011b20ff-ce6d-4b83-89e2-250f46c7b629}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\Characters">
+      <UniqueIdentifier>{c5c368ec-d110-4a2d-b19a-5a1d66fefcdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\Boundaries">
+      <UniqueIdentifier>{8a40a208-0755-446f-9328-6f27832f7c76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\Platforms">
+      <UniqueIdentifier>{6d95f6ad-7762-41f5-a91f-57130e5d92f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Source Files\Entities</Filter>
     </ClCompile>
     <ClCompile Include="EntityManager.cpp">
       <Filter>Source Files\Managers</Filter>
@@ -60,28 +87,40 @@
     <ClCompile Include="GameCamera.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GenericComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Entities\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticPlatform.cpp">
+      <Filter>Source Files\Entities\Platforms</Filter>
+    </ClCompile>
+    <ClCompile Include="PatternPlatform.cpp">
+      <Filter>Source Files\Entities\Platforms</Filter>
+    </ClCompile>
+    <ClCompile Include="SideBoundary.cpp">
+      <Filter>Source Files\Entities\Boundaries</Filter>
+    </ClCompile>
+    <ClCompile Include="SideBoundaryComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Pattern.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="PatternTypes.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Settings.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Orientation.h">
-      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="EntityManager.h">
       <Filter>Header Files\Managers</Filter>
@@ -97,6 +136,45 @@
     </ClInclude>
     <ClInclude Include="GameCamera.h">
       <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Orientation.h">
+      <Filter>Header Files\Utilities\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="PatternTypes.h">
+      <Filter>Header Files\Utilities\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Pattern.h">
+      <Filter>Header Files\Utilities\HelperObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentTypes.h">
+      <Filter>Header Files\Utilities\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="GenericComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Entities\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticPlatform.h">
+      <Filter>Header Files\Entities\Platforms</Filter>
+    </ClInclude>
+    <ClInclude Include="PatternPlatform.h">
+      <Filter>Header Files\Entities\Platforms</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectTypes.h">
+      <Filter>Header Files\Utilities\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="SideBoundary.h">
+      <Filter>Header Files\Entities\Boundaries</Filter>
+    </ClInclude>
+    <ClInclude Include="SideBoundaryComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

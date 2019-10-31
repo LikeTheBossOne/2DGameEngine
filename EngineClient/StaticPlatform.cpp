@@ -1,14 +1,10 @@
 #include "StaticPlatform.h"
-#include "SFML/System/Time.hpp"
+#include "TransformComponent.h"
 
-StaticPlatform::StaticPlatform(Game* game, sf::Texture* texture, sf::Vector2f location, sf::Vector2f size) : Platform(game, texture, location, size)
+StaticPlatform::StaticPlatform(int GUID, sf::FloatRect location) : GameObject(GUID)
 {
-}
+	_transform = new TransformComponent(this, location, true);
 
-StaticPlatform::StaticPlatform(Game* game, sf::Vector2f location, sf::Vector2f size) : Platform(game, location, size)
-{
-}
-
-void StaticPlatform::tick(int deltaTime)
-{
+	_sfRectangleShape = new sf::RectangleShape(sf::Vector2f(location.width, location.height));
+	_sfRectangleShape->setPosition(location.left, location.top);
 }

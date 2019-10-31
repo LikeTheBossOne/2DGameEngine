@@ -2,7 +2,7 @@
 #include "Settings.h"
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include "Entity.h"
+#include <stdlib.h>
 #include "GameTime.h"
 #include "EntityManager.h"
 #include "ResourceManager.h"
@@ -21,21 +21,27 @@ Game::Game(int clientNumber, int playerNumber)
 	_resourceManager = new ResourceManager(this);
 
 	// Load Textures
-	sf::Texture* lanceTexture = new sf::Texture();
+	auto lanceTexture = new sf::Texture();
 	if (!lanceTexture->loadFromFile("assets/images/lance.png"))
 	{
 		std::cout << "Failed to load player texture" << std::endl;
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
-	sf::Texture* poleTexture = new sf::Texture();
+	auto poleTexture = new sf::Texture();
 	if (!poleTexture->loadFromFile("assets/images/pole.png"))
 	{
 		std::cout << "Failed to load pole texture" << std::endl;
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 
 	getResourceManager()->addTexture("lance", lanceTexture);
 	getResourceManager()->addTexture("pole", poleTexture);
+
+	// Lance animations
+	auto lanceAnims = std::vector<sf::IntRect>();
+	lanceAnims.emplace_back(0, 0, 17, 27);
+	lanceAnims.emplace_back(0, 28, 17, 27);
+	getResourceManager()->addTextureAnimations("lance", lanceAnims);
 }
 
 Game::~Game() = default;
@@ -167,10 +173,10 @@ void Game::run(zmq::socket_t& socket, std::mutex& myPlayerLock, std::mutex& play
 		socket.recv(response);
 		auto responseString = std::string(static_cast<char*>(response.data()), response.size());
 
-
-		// Draw
+		// Update & Draw
 		if (_shouldStartYet)
 		{
+			_entityManager->update(myPlayerLock);
 			window.clear();
 			_entityManager->draw(window, myPlayerLock, playersLock, entitiesLock);
 			if (gameTime.getPaused())

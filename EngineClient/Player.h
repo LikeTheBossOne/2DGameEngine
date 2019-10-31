@@ -1,26 +1,13 @@
 #pragma once
 #include <SFML/Graphics/RectangleShape.hpp>
-#include "Entity.h"
 #include "Orientation.h"
+#include "GameObject.h"
 
-class Platform;
-
-class Player: public Entity
+class Player : public GameObject
 {
 public:
-	Player(Game* game, int GUID, sf::Texture* texture, sf::Vector2f location, sf::Vector2f size);
-	Player(Game* game, int GUID, sf::Vector2f location, sf::Vector2f size);
-	~Player();
+	Player(int GUID, sf::FloatRect location);
 
-	void tick(int deltaTime) override;
-private:
-	float _velocityX;
-	float _velocityY;
-	float _accelerationX;
-	float _accelerationY;
-
-	Platform* _groundPlat;
-
-	Orientation _orientation;
+	GameObjectTypes getType() override { return GameObjectTypes::Player; }
 };
 

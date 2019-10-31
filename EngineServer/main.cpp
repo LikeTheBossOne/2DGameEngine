@@ -22,9 +22,10 @@ void reqRepCommunication(Game& game, zmq::context_t& context)
 		if (requestString == "OPEN")
 		{
 			// Create Player for client
-			Player* clientsPlayer = new Player(&game, "lance", 20, 400, 36, 64);
-			clientsPlayer->setTextureRect(new EntityRectangle(0, 0, 17, 27));
-			game.getEntityManager()->addPlayer(clientsPlayer);
+			Player* clientsPlayer = new Player(game.getEntityManager()->getPhysicsEngineSettings(), 36, 64, "lance",
+			                                   game.getEntityManager()->getSpawns()[0]);
+			InputManager::getInstance()->setInputs(clientsPlayer->getGUID(), std::vector<bool>(3, false));
+			game.getEntityManager()->addEntity(clientsPlayer);
 
 			// Assign client id based on player _GUID
 			auto responseString = std::to_string(clientsPlayer->getGUID()) + " " + std::to_string(game.getTotalPlayerCount());
@@ -51,7 +52,7 @@ void reqRepCommunication(Game& game, zmq::context_t& context)
 			// Remove player
 			if (inputString == "CLOSE")
 			{
-				game.getEntityManager()->deletePlayer(playerNumber);
+				game.getEntityManager()->deleteEntity(playerNumber);
 			}
 			else
 			{
@@ -70,7 +71,7 @@ void reqRepCommunication(Game& game, zmq::context_t& context)
 					}
 
 				}
-				game.getInputManager()->setPlayerKeyPressed(playerNumber, keys);
+				InputManager::getInstance()->setInputs(playerNumber, keys);
 			}
 
 			
