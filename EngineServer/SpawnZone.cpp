@@ -13,3 +13,13 @@ SpawnZone::SpawnZone(PhysicsEngineSettings* physSettings, float x, float y)
 	_components[ComponentTypes::SpawnComponent] = new SpawnComponent(this);
 
 }
+
+SpawnZone::SpawnZone(const SpawnZone& other, PhysicsEngineSettings* physSettings) : GameObject(other)
+{
+	_transform = new TransformComponent(*other._transform, this);
+	_rigidBody = new RigidBodyComponent(*other._rigidBody, this, physSettings);
+	
+	_components[ComponentTypes::SpawnComponent] = new SpawnComponent(
+		*static_cast<SpawnComponent*>(other._components.at(ComponentTypes::SpawnComponent)), this
+	);
+}

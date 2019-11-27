@@ -12,6 +12,15 @@ PatternComponent::PatternComponent(GameObject* gameObject, std::vector<Pattern*>
 	_startOfPatternY = _gameObject->getTransform()->getPositionY();
 }
 
+PatternComponent::PatternComponent(const PatternComponent& other, GameObject* gameObject) : GenericComponent(gameObject)
+{
+	_patterns = other._patterns;
+	_currentPattern = other._currentPattern;
+	_patternGametimeCount = other._patternGametimeCount;
+	_startOfPatternX = other._startOfPatternX;
+	_startOfPatternY = other._startOfPatternY;
+}
+
 void PatternComponent::update(int deltaTime)
 {
 	auto transform = _gameObject->getTransform();

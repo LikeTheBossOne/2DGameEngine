@@ -138,6 +138,7 @@
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GenericComponent.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pattern.cpp" />
     <ClCompile Include="GameTime.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectTypes.h" />
     <ClInclude Include="GenericComponent.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="Orientation.h" />
     <ClInclude Include="Pattern.h" />
     <ClInclude Include="PatternPlatform.h" />

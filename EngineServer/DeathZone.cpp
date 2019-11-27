@@ -15,3 +15,17 @@ DeathZone::DeathZone(PhysicsEngineSettings* physSettings, Rect position)
 
 	_components[ComponentTypes::KillComponent] = new KillComponent(this);
 }
+
+DeathZone::DeathZone(const DeathZone& other, PhysicsEngineSettings* physSettings) : GameObject(other)
+{
+	_transform = new TransformComponent(*other._transform, this);
+	_rigidBody = new RigidBodyComponent(*other._rigidBody, this, physSettings);
+	
+	_components[ComponentTypes::RectangleColliderComponent] = new RectangleColliderComponent(
+		*static_cast<RectangleColliderComponent*>(other._components.at(ComponentTypes::RectangleColliderComponent)), this
+	);
+
+	_components[ComponentTypes::KillComponent] = new KillComponent(
+		*static_cast<KillComponent*>(other._components.at(ComponentTypes::KillComponent)), this
+	);
+}

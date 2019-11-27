@@ -12,3 +12,13 @@ SideBoundary::SideBoundary(PhysicsEngineSettings* physSettings, float x, float s
 
 	_components[ComponentTypes::SideBoundaryComponent] = new SideBoundaryComponent(this, sceneShiftWidth);
 }
+
+SideBoundary::SideBoundary(const SideBoundary& other, PhysicsEngineSettings* physSettings) : GameObject(other)
+{
+	_transform = new TransformComponent(*other._transform, this);
+	_rigidBody = new RigidBodyComponent(*other._rigidBody, this, physSettings);
+	
+	_components[ComponentTypes::SideBoundaryComponent] = new SideBoundaryComponent(
+		*static_cast<SideBoundaryComponent*>(other._components.at(ComponentTypes::SideBoundaryComponent)), this
+	);
+}

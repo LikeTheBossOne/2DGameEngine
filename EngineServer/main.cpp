@@ -5,6 +5,15 @@
 #include "Player.h"
 #include "EntityManager.h"
 #include "InputManager.h"
+#include "InputEvent.h"
+#include "EventManager.h"
+#include "StartRecordingEvent.h"
+#include "StopRecordingEvent.h"
+#include "StartReplayEvent.h"
+#include "ReplaySystem.h"
+#include "Replay.h"
+#include "ChangeReplaySpeedEvent.h"
+#include "duktape.h"
 
 const std::string REQREP_PORT = "tcp://*:5555";
 const std::string PUBSUB_PORT = "tcp://*:5560";
@@ -24,13 +33,60 @@ void reqRepCommunication(Game& game, zmq::context_t& context)
 			// Create Player for client
 			Player* clientsPlayer = new Player(game.getEntityManager()->getPhysicsEngineSettings(), 36, 64, "lance",
 			                                   game.getEntityManager()->getSpawns()[0]);
-			InputManager::getInstance()->setInputs(clientsPlayer->getGUID(), std::vector<bool>(3, false));
+			auto inputEvent = new InputEvent(clientsPlayer->getGUID(), std::bitset<3>(false));
+			EventManager::getInstance()->raiseEvent(inputEvent);
 			game.getEntityManager()->addEntity(clientsPlayer);
 
 			// Assign client id based on player _GUID
 			auto responseString = std::to_string(clientsPlayer->getGUID()) + " " + std::to_string(game.getTotalPlayerCount());
 			zmq::message_t response(responseString.data(), responseString.size());
 			
+			registrar.send(response, zmq::send_flags::none);
+		}
+		else if (requestString == "START_RECORDING")
+		{
+			EventManager::getInstance()->raiseEvent(new StartRecordingEvent(
+				new Replay(game.getEntityManager()->getEntities(), game.getEntityManager()->getPhysicsEngineSettings())));
+
+			// Respond
+			std::string responseString = "THANKS";
+			zmq::message_t response(responseString.data(), responseString.size());
+			registrar.send(response, zmq::send_flags::none);
+		}
+		else if (requestString == "STOP_RECORDING") // Stop recording and start replay
+		{
+			EventManager::getInstance()->raiseEvent(new StopRecordingEvent());
+
+			// Respond
+			std::string responseString = "THANKS";
+			zmq::message_t response(responseString.data(), responseString.size());
+			registrar.send(response, zmq::send_flags::none);
+		}
+		else if (requestString == "REP_SPEED_UP")
+		{
+			EventManager::getInstance()->raiseEvent(new ChangeReplaySpeedEvent(2.0));
+
+			// Respond
+			std::string responseString = "THANKS";
+			zmq::message_t response(responseString.data(), responseString.size());
+			registrar.send(response, zmq::send_flags::none);
+		}
+		else if (requestString == "REP_SPEED_DOWN")
+		{
+			EventManager::getInstance()->raiseEvent(new ChangeReplaySpeedEvent(0.5));
+
+			// Respond
+			std::string responseString = "THANKS";
+			zmq::message_t response(responseString.data(), responseString.size());
+			registrar.send(response, zmq::send_flags::none);
+		}
+		else if (game.getReplaySystem()->isReplaying())
+		{
+			// Do Nothing
+			
+			// Respond
+			std::string responseString = "THANKS";
+			zmq::message_t response(responseString.data(), responseString.size());
 			registrar.send(response, zmq::send_flags::none);
 		}
 		else
@@ -44,7 +100,7 @@ void reqRepCommunication(Game& game, zmq::context_t& context)
 			int playerNumber = std::stoi(playerNumberString);
 			
 			// Get player input
-			std::vector<bool> keys;
+			std::bitset<3> keys;
 			
 			std::string inputString;
 			std::getline(f, inputString);
@@ -59,19 +115,24 @@ void reqRepCommunication(Game& game, zmq::context_t& context)
 				std::istringstream inputKeyStream(inputString);
 
 				std::string key;
+				int i = 0;
 				while (std::getline(inputKeyStream, key, ','))
 				{
 					if (key == "true")
 					{
-						keys.emplace_back(true);
+						keys[i] = true;
 					}
 					else if (key == "false")
 					{
-						keys.emplace_back(false);
+						keys[i] = false;
 					}
-
+					i++;
 				}
-				InputManager::getInstance()->setInputs(playerNumber, keys);
+				if (keys != InputManager::getInstance()->getInputs(playerNumber))
+				{
+					auto inputEvent = new InputEvent(playerNumber, keys);
+					EventManager::getInstance()->raiseEvent(inputEvent);
+				}
 			}
 
 			

@@ -10,6 +10,7 @@ class GameObject
 {
 public:
 	GameObject();
+	GameObject(const GameObject& other);
 	virtual ~GameObject() = default;
 
 	int getGUID() { return _GUID; }

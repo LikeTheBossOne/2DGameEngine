@@ -8,6 +8,7 @@ class TextureComponent: public GenericComponent
 {
 public:
 	TextureComponent(GameObject* gameObject, std::string textureName);
+	TextureComponent(const TextureComponent& other, GameObject* gameObject);
 
 	void update(int deltaTime) override;
 	ComponentTypes getType() override { return ComponentTypes::TextureComponent; };

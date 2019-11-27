@@ -1,12 +1,16 @@
 #include "InputManager.h"
 #include "GameObject.h"
 #include "PlayerInputComponent.h"
+#include "EventManager.h"
+#include "InputEvent.h"
 
 InputManager* InputManager::_instance;
 
 InputManager::InputManager()
 {
-	_inputs = std::map<int, std::vector<bool>>();
+	_inputs = std::map<int, std::bitset<3>>();
+
+	EventManager::getInstance()->registerFor(this, "Input");
 }
 
 InputManager* InputManager::getInstance()
@@ -19,12 +23,20 @@ InputManager* InputManager::getInstance()
 	return _instance;
 }
 
-void InputManager::setInputs(int GUID, std::vector<bool> inputs)
+void InputManager::onEvent(Event* e)
 {
-	_inputs[GUID] = inputs;
+	if (e->getType() == "Input")
+	{
+		handleInputEvent(static_cast<InputEvent*>(e));
+	}
 }
 
-std::vector<bool> InputManager::getInputs(int GUID)
+void InputManager::handleInputEvent(InputEvent* e)
+{
+	_inputs[e->playerGUID] = e->inputs;
+}
+
+std::bitset<3> InputManager::getInputs(int GUID)
 {
 	return _inputs[GUID];
 }

@@ -34,6 +34,9 @@ private:
 	int _clientNumber;
 	int _playerNumber;
 
+	bool _isReplaying;
+	bool _isRecording;
+	
 	bool _shouldStartYet;
 	bool _shouldEnd;
 };

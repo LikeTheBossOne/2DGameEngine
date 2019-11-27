@@ -15,11 +15,30 @@
 #include "DeathZone.h"
 #include "SideBoundaryComponent.h"
 #include "SideBoundary.h"
+#include "EventManager.h"
+#include "InputManager.h"
+#include "Replay.h"
+#include "InputEvent.h"
+#include "ReplaySystem.h"
+#include "StopReplayEvent.h"
+#include "ScriptManager.h"
+#include <iostream>
+#include "dukglue/dukglue.h"
+
+const int Game::STEP_SIZE = 2;
 
 Game::Game()
 {
+	_replaySystem = new ReplaySystem();
 	_entityManager = new EntityManager(this);
+	InputManager::getInstance();
 
+	
+	_gameTime = new GameTime(STEP_SIZE);
+	
+	EventManager::getInstance()->init(_gameTime);
+	ScriptManager::getInstance(); // init scriptManager
+	
 	_totalPlayerCount = 0;
 }
 
@@ -71,36 +90,63 @@ void Game::run(zmq::socket_t& publisher)
 	_entityManager->addEntity(pPlat2);
 	_entityManager->addEntity(sideBoundary);
 
-	int STEP_SIZE = 2;
-	GameTime gameTime(STEP_SIZE);
-	int previousTime = gameTime.getTime();
-	int deltaTime = 0;
 	
+	int previousTime = _gameTime->getTime();
+	int deltaTime = 0;
+
+	// Recording
+
 	bool running = true;
 	while (running)
 	{
-		// Decide whether to update or wait
-		deltaTime = gameTime.getTime() - previousTime;
-		int governor = std::floor(1000 / (FRAMERATE * STEP_SIZE));
+		deltaTime = _gameTime->getTime() - previousTime;
+		
+		int governor = _replaySystem->isReplaying()
+			? std::floor(1000 / (FRAMERATE * STEP_SIZE * _replaySystem->getReplaySpeed()))
+			: std::floor(1000 / (FRAMERATE * STEP_SIZE));
 		while (deltaTime < governor) // 8 is for ~ 1000 / (60 * 2)
 		{
-			// std::this_thread::sleep_for(std::chrono::milliseconds(governor - deltaTime));
-			deltaTime = gameTime.getTime() - previousTime;
+			deltaTime = _gameTime->getTime() - previousTime;
 		}
-		deltaTime = gameTime.getTime() - previousTime;
-		previousTime = gameTime.getTime();
-		// std::cout << 1000 / (deltaTime * STEP_SIZE * gameTime.getScale()) << std::endl;
-		// std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - prevRT).count() << std::endl;;
+		deltaTime = _gameTime->getTime() - previousTime;
+		previousTime = _gameTime->getTime();
+
+		if (_replaySystem->isRecording())
+		{
+			auto inputs = InputManager::getInstance()->getAllInputs();
+			_replaySystem->getLastReplay()->addReplayTick(ReplayTick(inputs, deltaTime));
+		}
+		if (_replaySystem->isReplaying())
+		{
+			// Check if replay complete
+			if (_replaySystem->getLastReplay()->isEmpty())
+			{
+				EventManager::getInstance()->raiseEvent(new StopReplayEvent());
+			}
+			else
+			{
+				auto tick = _replaySystem->getLastReplay()->popReplayTick();
+
+				deltaTime = tick.getTimestamp();
+				auto inputs = tick.getInputs();
+				for (auto pair : inputs)
+				{
+					if (pair.second != InputManager::getInstance()->getInputs(pair.first))
+					{
+						auto inputEvent = new InputEvent(pair.first, pair.second);
+						EventManager::getInstance()->raiseEvent(inputEvent);
+					}
+				}
+			}
+		}
 
 		// Tick
 		_entityManager->update(deltaTime);
-
-
-		// Display
-		std::map<int, GameObject*> entities = _entityManager->getEntities();
+		EventManager::getInstance()->dispatchEvents();
 
 		
 		// Publish to client
+		std::map<int, GameObject*> entities = _entityManager->getEntities();
 		std::string entitiesString;
 		for (std::pair<int, GameObject*> pPair : entities)
 		{
@@ -146,6 +192,14 @@ void Game::run(zmq::socket_t& publisher)
 				{
 					entitiesString.append("None");
 				}
+			}
+
+			if (entity->getType() == "Player")
+			{
+				auto inputs = InputManager::getInstance()->getInputs(entity->getGUID());
+				entitiesString += "," + std::to_string(inputs[0]) + ",";
+				entitiesString += std::to_string(inputs[1]) + ",";
+				entitiesString += std::to_string(inputs[2]);
 			}
 
 			entitiesString += "\n";

@@ -1,0 +1,14 @@
+#pragma once
+enum class ParameterType
+{
+	INTEGER,
+	NUMBER,
+	STRING,
+	TRANSFORM_COMPONENT,
+	MOVEMENT_COMPONENT,
+	JUMP_COMPONENT,
+	DEATH_EVENT,
+	EVENT_MANAGER,
+	NONE,
+};
+

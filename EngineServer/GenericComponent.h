@@ -8,6 +8,7 @@ class GenericComponent
 public:
 	virtual ~GenericComponent() = default;
 	GenericComponent(GameObject* gameObject);
+	
 	virtual void update(int deltaTime) = 0;
 	virtual ComponentTypes getType() = 0;
 protected:

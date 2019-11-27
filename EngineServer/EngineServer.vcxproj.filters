@@ -100,6 +100,60 @@
     <Filter Include="Source Files\Entities\Zones">
       <UniqueIdentifier>{3fc232d9-fa5e-4b45-8b73-c86ea920ea06}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Events">
+      <UniqueIdentifier>{834bb3bb-235c-4255-b728-925c52bba912}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Events">
+      <UniqueIdentifier>{b271c7c2-7276-475a-abba-e4463e0ac899}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Events\Collision">
+      <UniqueIdentifier>{95d03f91-189d-4054-ab97-08d005eb1d65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Events\Collision">
+      <UniqueIdentifier>{6b716e4d-97a5-48f9-90fe-720a1209452c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Managers\Event Handlers">
+      <UniqueIdentifier>{e1c6dee3-cd2f-4776-bb95-5192c4e3f4f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Managers\Event Handlers">
+      <UniqueIdentifier>{cb38a0e3-1505-4c7e-8511-1e7489d73e99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Events\Recording">
+      <UniqueIdentifier>{8a409fa7-b5ab-4221-a30d-1fc2b061f425}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Events\Recording">
+      <UniqueIdentifier>{1b7afb49-7318-4932-875e-56303c2d5070}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scripting">
+      <UniqueIdentifier>{19a623d3-a099-45b5-9770-03d461ff1312}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scripting">
+      <UniqueIdentifier>{989babb1-5117-4fe3-bafd-baf773bbd490}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scripting\Duk">
+      <UniqueIdentifier>{dce933b4-a4b6-4b93-ac96-08fc2f03a538}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scripting\Duk">
+      <UniqueIdentifier>{67e50265-d6c3-4ed6-aa73-53e5f88ab6dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scripting\Parameters">
+      <UniqueIdentifier>{ea44c0d1-de1e-445c-8e30-acd62866018c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scripting\Parameters\Components">
+      <UniqueIdentifier>{c1e1a27a-5900-4582-ba5f-a06d046ce5bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scripting\Parameters\Events">
+      <UniqueIdentifier>{a968b57a-4e38-4b07-881e-17653dd4d14d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scripting\Parameters">
+      <UniqueIdentifier>{dcbe596a-d330-4aa5-806e-43fa452425b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scripting\Parameters\Components">
+      <UniqueIdentifier>{c79d857d-18b2-4b83-9abf-2d9cafb0c5d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scripting\Parameters\Events">
+      <UniqueIdentifier>{9dc24054-15c0-4fd3-9221-acef5bc144cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -162,12 +216,6 @@
     <ClCompile Include="PhysicsEngineSettings.cpp">
       <Filter>Source Files\WorldSettings</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Source Files\Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="CollisionsManager.cpp">
-      <Filter>Source Files\Managers</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerInputComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
@@ -197,6 +245,102 @@
     </ClCompile>
     <ClCompile Include="SideBoundary.cpp">
       <Filter>Source Files\Entities\Zones</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="EventHandler.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnEvent.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="DeathEvent.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionEvent.cpp">
+      <Filter>Source Files\Events\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionsDetector.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnableComponent.cpp">
+      <Filter>Source Files\Components\Health</Filter>
+    </ClCompile>
+    <ClCompile Include="InputEvent.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="ReplayTick.cpp">
+      <Filter>Source Files\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Replay.cpp">
+      <Filter>Source Files\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Source Files\Managers\Event Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="LifeSystem.cpp">
+      <Filter>Source Files\Managers\Event Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementSystem.cpp">
+      <Filter>Source Files\Managers\Event Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="ReplaySystem.cpp">
+      <Filter>Source Files\Managers\Event Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnSystem.cpp">
+      <Filter>Source Files\Managers\Event Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="StartRecordingEvent.cpp">
+      <Filter>Source Files\Events\Recording</Filter>
+    </ClCompile>
+    <ClCompile Include="StopRecordingEvent.cpp">
+      <Filter>Source Files\Events\Recording</Filter>
+    </ClCompile>
+    <ClCompile Include="StartReplayEvent.cpp">
+      <Filter>Source Files\Events\Recording</Filter>
+    </ClCompile>
+    <ClCompile Include="StopReplayEvent.cpp">
+      <Filter>Source Files\Events\Recording</Filter>
+    </ClCompile>
+    <ClCompile Include="ChangeReplaySpeedEvent.cpp">
+      <Filter>Source Files\Events\Recording</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptManager.cpp">
+      <Filter>Source Files\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptReturnValue.cpp">
+      <Filter>Source Files\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="duktape.c">
+      <Filter>Source Files\Scripting\Duk</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManagerParameter.cpp">
+      <Filter>Source Files\Scripting\Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="IntParameter.cpp">
+      <Filter>Source Files\Scripting\Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementComponentParameter.cpp">
+      <Filter>Source Files\Scripting\Parameters\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="JumpComponentParameter.cpp">
+      <Filter>Source Files\Scripting\Parameters\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="DeathEventParameter.cpp">
+      <Filter>Source Files\Scripting\Parameters\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="NumberParameter.cpp">
+      <Filter>Source Files\Scripting\Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="StringParameter.cpp">
+      <Filter>Source Files\Scripting\Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformComponentParameter.cpp">
+      <Filter>Source Files\Scripting\Parameters\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -275,12 +419,6 @@
     <ClInclude Include="PhysicsEngineSettings.h">
       <Filter>Header Files\WorldSettings</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Header Files\Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionsManager.h">
-      <Filter>Header Files\Managers</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerInputComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -307,6 +445,111 @@
     </ClInclude>
     <ClInclude Include="SideBoundary.h">
       <Filter>Header Files\Entities\Zones</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="EventHandler.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnEvent.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="DeathEvent.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionEvent.h">
+      <Filter>Header Files\Events\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionsDetector.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnableComponent.h">
+      <Filter>Header Files\Components\Health</Filter>
+    </ClInclude>
+    <ClInclude Include="LifeSystem.h">
+      <Filter>Header Files\Managers\Event Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementSystem.h">
+      <Filter>Header Files\Managers\Event Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnSystem.h">
+      <Filter>Header Files\Managers\Event Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Header Files\Managers\Event Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="InputEvent.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="ReplayTick.h">
+      <Filter>Header Files\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Replay.h">
+      <Filter>Header Files\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="ReplaySystem.h">
+      <Filter>Header Files\Managers\Event Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="StartRecordingEvent.h">
+      <Filter>Header Files\Events\Recording</Filter>
+    </ClInclude>
+    <ClInclude Include="StartReplayEvent.h">
+      <Filter>Header Files\Events\Recording</Filter>
+    </ClInclude>
+    <ClInclude Include="StopReplayEvent.h">
+      <Filter>Header Files\Events\Recording</Filter>
+    </ClInclude>
+    <ClInclude Include="StopRecordingEvent.h">
+      <Filter>Header Files\Events\Recording</Filter>
+    </ClInclude>
+    <ClInclude Include="ChangeReplaySpeedEvent.h">
+      <Filter>Header Files\Events\Recording</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptManager.h">
+      <Filter>Header Files\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="ParameterType.h">
+      <Filter>Header Files\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptReturnValue.h">
+      <Filter>Header Files\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="duk_config.h">
+      <Filter>Header Files\Scripting\Duk</Filter>
+    </ClInclude>
+    <ClInclude Include="duktape.h">
+      <Filter>Header Files\Scripting\Duk</Filter>
+    </ClInclude>
+    <ClInclude Include="Parameter.h">
+      <Filter>Header Files\Scripting\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="IntParameter.h">
+      <Filter>Header Files\Scripting\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="NumberParameter.h">
+      <Filter>Header Files\Scripting\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="StringParameter.h">
+      <Filter>Header Files\Scripting\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformComponentParameter.h">
+      <Filter>Header Files\Scripting\Parameters\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementComponentParameter.h">
+      <Filter>Header Files\Scripting\Parameters\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpComponentParameter.h">
+      <Filter>Header Files\Scripting\Parameters\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="DeathEventParameter.h">
+      <Filter>Header Files\Scripting\Parameters\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManagerParameter.h">
+      <Filter>Header Files\Scripting\Parameters</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

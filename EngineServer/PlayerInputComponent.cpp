@@ -12,9 +12,17 @@ PlayerInputComponent::PlayerInputComponent(GameObject* gameObject, float leftVel
 	_rightPressedVelocity = rightVelocity;
 }
 
+PlayerInputComponent::PlayerInputComponent(const PlayerInputComponent& other, GameObject* gameObject) : GenericComponent(gameObject)
+{
+	_leftPressedVelocity = other._leftPressedVelocity;
+	_rightPressedVelocity = other._rightPressedVelocity;
+}
+
 void PlayerInputComponent::update(int deltaTime)
 {
 	const auto inputs = InputManager::getInstance()->getInputs(_gameObject->getGUID());
+	// if (inputs.empty()) return;
+	
 	const auto gMovement = _gameObject->getComponent(ComponentTypes::MovementComponent);
 	auto movement = gMovement != nullptr ? dynamic_cast<MovementComponent*>(gMovement) : nullptr;
 	if (inputs[int(Inputs::LEFT)] && movement != nullptr)

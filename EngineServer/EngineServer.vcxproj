@@ -76,7 +76,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\vsdev\libzmq-v141-4_3_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\vsdev\dukglue-master\include;C:\vsdev\libzmq-v141-4_3_2;C:\vsdev\duktape-2.4.0\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -103,7 +104,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\vsdev\libzmq-v141-4_3_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\vsdev\libzmq-v141-4_3_2;C:\vsdev\dukglue-master\include;C:\vsdev\duktape-2.4.0\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,12 +131,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CollisionsManager.cpp" />
+    <ClCompile Include="ChangeReplaySpeedEvent.cpp" />
+    <ClCompile Include="CollisionEvent.cpp" />
+    <ClCompile Include="DeathEventParameter.cpp" />
+    <ClCompile Include="duktape.c" />
+    <ClCompile Include="EventManagerParameter.cpp" />
+    <ClCompile Include="InputEvent.cpp" />
+    <ClCompile Include="IntParameter.cpp" />
+    <ClCompile Include="JumpComponentParameter.cpp" />
+    <ClCompile Include="MovementComponentParameter.cpp" />
+    <ClCompile Include="MovementSystem.cpp" />
+    <ClCompile Include="CollisionsDetector.cpp" />
     <ClCompile Include="ColorComponent.cpp" />
+    <ClCompile Include="DeathEvent.cpp" />
     <ClCompile Include="DeathZone.cpp" />
     <ClCompile Include="DieComponent.cpp" />
+    <ClCompile Include="Event.cpp" />
+    <ClCompile Include="EventHandler.cpp" />
+    <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="GenericComponent.cpp" />
+    <ClCompile Include="LifeSystem.cpp" />
     <ClCompile Include="KillComponent.cpp" />
+    <ClCompile Include="NumberParameter.cpp" />
     <ClCompile Include="PlayerInputComponent.cpp" />
     <ClCompile Include="JumpComponent.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
@@ -152,24 +170,57 @@
     <ClCompile Include="PatternPlatform.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="EngineRectangle.cpp" />
+    <ClCompile Include="Replay.cpp" />
+    <ClCompile Include="ReplaySystem.cpp" />
+    <ClCompile Include="ReplayTick.cpp" />
     <ClCompile Include="RigidBodyComponent.cpp" />
+    <ClCompile Include="ScriptManager.cpp" />
+    <ClCompile Include="ScriptReturnValue.cpp" />
     <ClCompile Include="SideBoundary.cpp" />
     <ClCompile Include="SideBoundaryComponent.cpp" />
+    <ClCompile Include="SpawnableComponent.cpp" />
     <ClCompile Include="SpawnComponent.cpp" />
+    <ClCompile Include="SpawnEvent.cpp" />
+    <ClCompile Include="SpawnSystem.cpp" />
     <ClCompile Include="SpawnZone.cpp" />
+    <ClCompile Include="StartRecordingEvent.cpp" />
+    <ClCompile Include="StartReplayEvent.cpp" />
     <ClCompile Include="StaticPlatform.cpp" />
+    <ClCompile Include="StopRecordingEvent.cpp" />
+    <ClCompile Include="StopReplayEvent.cpp" />
+    <ClCompile Include="StringParameter.cpp" />
     <ClCompile Include="TextureComponent.cpp" />
     <ClCompile Include="Timeline.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
+    <ClCompile Include="TransformComponentParameter.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CollisionsManager.h" />
+    <ClInclude Include="ChangeReplaySpeedEvent.h" />
+    <ClInclude Include="CollisionEvent.h" />
+    <ClInclude Include="DeathEventParameter.h" />
+    <ClInclude Include="duktape.h" />
+    <ClInclude Include="duk_config.h" />
+    <ClInclude Include="EventManagerParameter.h" />
+    <ClInclude Include="InputEvent.h" />
+    <ClInclude Include="IntParameter.h" />
+    <ClInclude Include="JumpComponentParameter.h" />
+    <ClInclude Include="MovementComponentParameter.h" />
+    <ClInclude Include="MovementSystem.h" />
+    <ClInclude Include="CollisionsDetector.h" />
     <ClInclude Include="ColorComponent.h" />
+    <ClInclude Include="DeathEvent.h" />
     <ClInclude Include="DeathZone.h" />
     <ClInclude Include="DieComponent.h" />
+    <ClInclude Include="Event.h" />
+    <ClInclude Include="EventHandler.h" />
+    <ClInclude Include="EventManager.h" />
     <ClInclude Include="GenericComponent.h" />
     <ClInclude Include="ComponentTypes.h" />
+    <ClInclude Include="LifeSystem.h" />
     <ClInclude Include="KillComponent.h" />
+    <ClInclude Include="NumberParameter.h" />
+    <ClInclude Include="Parameter.h" />
+    <ClInclude Include="ParameterType.h" />
     <ClInclude Include="PlayerInputComponent.h" />
     <ClInclude Include="JumpComponent.h" />
     <ClInclude Include="MovementComponent.h" />
@@ -189,16 +240,30 @@
     <ClInclude Include="PatternTypes.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="EngineRectangle.h" />
+    <ClInclude Include="Replay.h" />
+    <ClInclude Include="ReplaySystem.h" />
+    <ClInclude Include="ReplayTick.h" />
     <ClInclude Include="RigidBodyComponent.h" />
+    <ClInclude Include="ScriptManager.h" />
+    <ClInclude Include="ScriptReturnValue.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="SideBoundary.h" />
     <ClInclude Include="SideBoundaryComponent.h" />
+    <ClInclude Include="SpawnableComponent.h" />
     <ClInclude Include="SpawnComponent.h" />
+    <ClInclude Include="SpawnEvent.h" />
+    <ClInclude Include="SpawnSystem.h" />
     <ClInclude Include="SpawnZone.h" />
+    <ClInclude Include="StartRecordingEvent.h" />
+    <ClInclude Include="StartReplayEvent.h" />
     <ClInclude Include="StaticPlatform.h" />
+    <ClInclude Include="StopRecordingEvent.h" />
+    <ClInclude Include="StopReplayEvent.h" />
+    <ClInclude Include="StringParameter.h" />
     <ClInclude Include="TextureComponent.h" />
     <ClInclude Include="Timeline.h" />
     <ClInclude Include="TransformComponent.h" />
+    <ClInclude Include="TransformComponentParameter.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

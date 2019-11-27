@@ -1,12 +1,14 @@
 #pragma once
 #include <map>
 
+class EventManager;
 class GameObject;
 
-class CollisionsManager
+class CollisionsDetector
 {
 public:
-	CollisionsManager();
+	CollisionsDetector();
 
 	void update(std::map<int, GameObject*> entities, int totalEntitiesToDate);
+private:
 };

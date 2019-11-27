@@ -5,6 +5,11 @@ SideBoundaryComponent::SideBoundaryComponent(GameObject* gameObject, float scene
 	_sceneShiftWidth = sceneShiftWidth;
 }
 
+SideBoundaryComponent::SideBoundaryComponent(const SideBoundaryComponent& other, GameObject* gameObject) : GenericComponent(gameObject)
+{
+	_sceneShiftWidth = other._sceneShiftWidth;
+}
+
 void SideBoundaryComponent::update(int deltaTime)
 {
 }

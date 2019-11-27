@@ -5,17 +5,13 @@ class DieComponent : public GenericComponent
 {
 public:
 	DieComponent(GameObject* gameObject, bool canRespawn);
-	DieComponent(GameObject* gameObject, bool canRespawn, GameObject* spawn);
-
-	void onDie();
+	DieComponent(const DieComponent& other, GameObject* gameObject);
 
 	void update(int deltaTime) override;
-	ComponentTypes getType() override { return ComponentTypes::DieComponent; }
 
-	void setCurrentSpawn(GameObject* spawn) { _currentSpawn = spawn; }
+	bool canRespawn() { return _canRespawn; }
+	ComponentTypes getType() override { return ComponentTypes::DieComponent; }
 private:
 	bool _canRespawn;
-
-	GameObject* _currentSpawn;
 };
 

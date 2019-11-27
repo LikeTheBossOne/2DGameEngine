@@ -8,17 +8,22 @@
 #include "ResourceManager.h"
 #include <thread>
 #include <zmq.hpp>
+#include "InputManager.h"
 
 Game::Game(int clientNumber, int playerNumber)
 {
 	_shouldStartYet = false;
 	_shouldEnd = false;
 
+	_isReplaying = false;
+	_isRecording = false;
+	
 	_clientNumber = clientNumber;
 	_playerNumber = playerNumber;
 	
 	_entityManager = new EntityManager(this);
 	_resourceManager = new ResourceManager(this);
+	InputManager::getInstance();
 
 	// Load Textures
 	auto lanceTexture = new sf::Texture();
@@ -55,7 +60,7 @@ void Game::run(zmq::socket_t& socket, std::mutex& myPlayerLock, std::mutex& play
 
 	
 	// Timeline values
-	int timelineScaleChangeTime = 0;
+	int replaySpeedTime = 0;
 
 	// Start Real Timeline
 	int STEP_SIZE = 2;
@@ -69,7 +74,7 @@ void Game::run(zmq::socket_t& socket, std::mutex& myPlayerLock, std::mutex& play
 	
 	while (window.isOpen())
 	{
-		timelineScaleChangeTime++;
+		replaySpeedTime++;
 
 
 		// HANDLE INPUT
@@ -87,24 +92,48 @@ void Game::run(zmq::socket_t& socket, std::mutex& myPlayerLock, std::mutex& play
 			}
 		}
 
-		// Handle Timeline setScale
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Dash)
-			&& timeline.getScale() < 2
-			&& timelineScaleChangeTime > 10
-			&& !gameTime.getPaused())
+		// In Game
+		// Decide whether to draw or wait
+		deltaTime = timeline.getTime() - previousTime;
+		int governor = std::floor(1000 / (FRAMERATE * STEP_SIZE));
+		while (deltaTime < governor) // 8 is for ~ 1000 / (60 * 2)
 		{
-			timeline.setScale(timeline.getScale() * 2);
-			previousTime /= 2;
-			timelineScaleChangeTime = 0;
+			// std::this_thread::sleep_for(std::chrono::milliseconds(governor - deltaTime));
+			deltaTime = timeline.getTime() - previousTime;
+		}
+		previousTime = timeline.getTime();
+		// std::cout << 1000 / (deltaTime * STEP_SIZE * timeline.getScale()) << std::endl;
+
+
+		
+		// Handle ReplaySpeed
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Dash)
+			&& replaySpeedTime > 10)
+		{
+			std::string inputString = "REP_SPEED_DOWN";
+
+			zmq::message_t inputMessage(inputString.data(), inputString.size());
+
+			socket.send(inputMessage, zmq::send_flags::none);
+
+			zmq::message_t response;
+			socket.recv(response);
+
+			continue;
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Equal)
-			&& timeline.getScale() > 0.5
-			&& timelineScaleChangeTime > 10
-			&& !gameTime.getPaused())
+			&& replaySpeedTime > 10)
 		{
-			timeline.setScale(timeline.getScale() / 2);
-			previousTime *= 2;
-			timelineScaleChangeTime = 0;
+			std::string inputString = "REP_SPEED_UP";
+
+			zmq::message_t inputMessage(inputString.data(), inputString.size());
+
+			socket.send(inputMessage, zmq::send_flags::none);
+
+			zmq::message_t response;
+			socket.recv(response);
+
+			continue;
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)
@@ -120,23 +149,37 @@ void Game::run(zmq::socket_t& socket, std::mutex& myPlayerLock, std::mutex& play
 				gameTime.pause();
 			}
 		}
-
-
-
-
-		// In Game
-		// Decide whether to draw or wait
-		deltaTime = timeline.getTime() - previousTime;
-		int governor = std::floor(1000 / (FRAMERATE * STEP_SIZE));
-		while (deltaTime < governor) // 8 is for ~ 1000 / (60 * 2)
+		// Send replay pressed
+		if (!_isRecording && sf::Keyboard::isKeyPressed(sf::Keyboard::Comma))
 		{
-			// std::this_thread::sleep_for(std::chrono::milliseconds(governor - deltaTime));
-			deltaTime = timeline.getTime() - previousTime;
+			std::string inputString = "START_RECORDING";
+
+			zmq::message_t inputMessage(inputString.data(), inputString.size());
+
+			socket.send(inputMessage, zmq::send_flags::none);
+
+			zmq::message_t response;
+			socket.recv(response);
+			
+			_isRecording = true;
+			continue;
 		}
-		previousTime = timeline.getTime();
-		std::cout << 1000 / (deltaTime * STEP_SIZE * timeline.getScale()) << std::endl;
+		else if (_isRecording && sf::Keyboard::isKeyPressed(sf::Keyboard::Period))
+		{
+			std::string inputString = "STOP_RECORDING";
 
+			zmq::message_t inputMessage(inputString.data(), inputString.size());
 
+			socket.send(inputMessage, zmq::send_flags::none);
+
+			zmq::message_t response;
+			socket.recv(response);
+			
+			_isRecording = false;
+			_isReplaying = true;
+			continue;
+		}
+		
 		// Send input
 		std::string inputString = std::to_string(_playerNumber) + "\n";
 		

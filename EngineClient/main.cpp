@@ -9,6 +9,8 @@
 #include "PatternPlatform.h"
 #include "SideBoundary.h"
 #include "TransformComponent.h"
+#include <bitset>
+#include "InputManager.h"
 
 const std::string REQREP_PORT = "tcp://localhost:5555";
 const std::string PUBSUB_PORT = "tcp://localhost:5560";
@@ -50,6 +52,10 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 			int colorG;
 			int colorB;
 			int textureAnimation;
+			bool leftPressed;
+			bool rightPressed;
+			bool upPressed;
+			
 
 			std::string field;
 			std::istringstream entityStream(entityLine);
@@ -120,6 +126,22 @@ void subscriberCommunication(Game& game, zmq::context_t& context, std::mutex& my
 					// B
 					std::getline(entityStream, field, ',');
 					colorB = std::stoi(field);
+				}
+
+				if (type == "Player")
+				{
+					std::bitset<3> keys;
+					
+					std::getline(entityStream, field, ',');
+					keys[0] = field == "1";
+
+					std::getline(entityStream, field, ',');
+					keys[1] = field == "1";
+
+					std::getline(entityStream, field, ',');
+					keys[2] = field == "1";
+
+					InputManager::getInstance()->setInputs(guid, keys);
 				}
 			}
 			

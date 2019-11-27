@@ -17,3 +17,17 @@ StaticPlatform::StaticPlatform(PhysicsEngineSettings* physSettings, Rect positio
 	
 	_components[ComponentTypes::ColorComponent] = new ColorComponent(this, r, g, b);
 }
+
+StaticPlatform::StaticPlatform(const StaticPlatform& other, PhysicsEngineSettings* physSettings) : GameObject(other)
+{
+	_transform = new TransformComponent(*other._transform, this);
+	_rigidBody = new RigidBodyComponent(*other._rigidBody, this, physSettings);
+	
+	_components[ComponentTypes::RectangleColliderComponent] = new RectangleColliderComponent(
+		*static_cast<RectangleColliderComponent*>(other._components.at(ComponentTypes::RectangleColliderComponent)), this
+	);
+
+	_components[ComponentTypes::ColorComponent] = new ColorComponent(
+		*static_cast<ColorComponent*>(other._components.at(ComponentTypes::ColorComponent)), this
+	);
+}

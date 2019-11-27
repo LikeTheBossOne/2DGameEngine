@@ -2,22 +2,26 @@
 #include <map>
 #include <vector>
 #include "Inputs.h"
+#include "EventHandler.h"
+#include <bitset>
 
+class InputEvent;
 class GameObject;
 
-class InputManager
+class InputManager : public EventHandler
 {
 public:
-	InputManager();
-
 	static InputManager* getInstance();
 
-	void setInputs(int GUID, std::vector<bool> inputs);
+	void onEvent(Event* e) override;
+	void handleInputEvent(InputEvent* e);
 
-	std::vector<bool> getInputs(int GUID);
+	std::bitset<3> getInputs(int GUID);
+	std::map<int, std::bitset<3>> getAllInputs() { return _inputs; };
 private:
+	InputManager();
 	static InputManager* _instance;
 
-	std::map<int, std::vector<bool>> _inputs;
+	std::map<int, std::bitset<3>> _inputs;
 };
 

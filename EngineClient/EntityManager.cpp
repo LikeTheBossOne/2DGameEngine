@@ -7,6 +7,8 @@
 #include "SideBoundary.h"
 #include "SideBoundaryComponent.h"
 #include "Settings.h"
+#include "InputManager.h"
+#include <iostream>
 
 EntityManager::EntityManager(Game* game)
 {
@@ -67,13 +69,15 @@ void EntityManager::update(std::mutex& myPlayerLock)
 			if (transform->getPositionX() + transform->getWidth() > boundaryTransform->getPositionX()
 				&& transform->getPositionX() < boundaryTransform->getPositionX())
 			{
+				auto inputs = InputManager::getInstance()->getInputs(_myPlayer->getGUID());
+				std::cout << inputs.to_string() << std::endl;
 				// if right of boundary
-				if (_gameCamera->getOffsetX() >= boundaryTransform->getPositionX() && sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+				if (_gameCamera->getOffsetX() >= boundaryTransform->getPositionX() && inputs[0])
 				{
 					_gameCamera->move(-WINDOW_WIDTH, 0);
 				}
 				// if right of boundary
-				else if (_gameCamera->getOffsetX() < boundaryTransform->getPositionX() && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+				else if (_gameCamera->getOffsetX() < boundaryTransform->getPositionX() && inputs[1])
 				{
 					_gameCamera->setOffsetX(boundaryTransform->getPositionX());
 				}

@@ -14,6 +14,7 @@ class Player: public GameObject
 {
 public:
 	Player(PhysicsEngineSettings* physSettings, float width, float height, std::string textureName, SpawnZone* spawn);
+	Player(const Player& other, PhysicsEngineSettings* physSettings, SpawnZone* spawn);
 
 	std::string getType() override { return "Player"; }
 };
