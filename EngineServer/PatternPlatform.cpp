@@ -24,3 +24,25 @@ PatternPlatform::PatternPlatform(PhysicsEngineSettings* physSettings, Rect posit
 
 	_components[ComponentTypes::PatternComponent] = new PatternComponent(this, std::move(patterns));
 }
+
+PatternPlatform::PatternPlatform(const PatternPlatform& other, PhysicsEngineSettings* physSettings) : GameObject(other)
+{
+	_transform = new TransformComponent(*other._transform, this);
+	_rigidBody = new RigidBodyComponent(*other._rigidBody, this, physSettings);
+	
+	_components[ComponentTypes::RectangleColliderComponent] = new RectangleColliderComponent(
+		*static_cast<RectangleColliderComponent*>(other._components.at(ComponentTypes::RectangleColliderComponent)), this
+	);
+
+	_components[ComponentTypes::ColorComponent] = new ColorComponent(
+		*static_cast<ColorComponent*>(other._components.at(ComponentTypes::ColorComponent)), this
+	);
+
+	_components[ComponentTypes::MovementComponent] = new MovementComponent(
+		*static_cast<MovementComponent*>(other._components.at(ComponentTypes::MovementComponent)), this
+	);
+
+	_components[ComponentTypes::PatternComponent] = new PatternComponent(
+		*static_cast<PatternComponent*>(other._components.at(ComponentTypes::PatternComponent)), this
+	);
+}

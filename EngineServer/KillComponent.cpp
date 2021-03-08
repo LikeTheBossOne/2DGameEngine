@@ -4,6 +4,11 @@ KillComponent::KillComponent(GameObject* gameObject) : GenericComponent(gameObje
 {
 }
 
+KillComponent::KillComponent(const KillComponent& other, GameObject* gameObject) : GenericComponent(gameObject)
+{
+	
+}
+
 void KillComponent::update(int deltaTime)
 {
 }

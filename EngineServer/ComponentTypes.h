@@ -14,5 +14,6 @@ enum class ComponentTypes
 	KillComponent,
 	DieComponent,
 	SpawnComponent,
+	SpawnableComponent,
 	SideBoundaryComponent,
 };

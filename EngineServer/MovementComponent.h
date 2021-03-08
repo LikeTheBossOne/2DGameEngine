@@ -8,7 +8,10 @@ class PhysicsEngineSettings;
 class MovementComponent : public GenericComponent
 {
 public:
+	static bool scriptInitialized;
+	
 	MovementComponent(GameObject* gameObject);
+	MovementComponent(const MovementComponent& other, GameObject* gameObject);
 
 	void update(int deltaTime) override;
 	ComponentTypes getType() override { return ComponentTypes::MovementComponent; };

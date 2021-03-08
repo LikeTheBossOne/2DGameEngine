@@ -7,6 +7,7 @@ class PatternComponent : public GenericComponent
 {
 public:
 	PatternComponent(GameObject* gameObject, std::vector<Pattern*> patterns);
+	PatternComponent(const PatternComponent& other, GameObject* gameObject);
 
 	void update(int deltaTime) override;
 	ComponentTypes getType() override { return ComponentTypes::PatternComponent; };

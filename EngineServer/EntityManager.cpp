@@ -4,17 +4,24 @@
 #include "PhysicsEngineSettings.h"
 #include "GenericComponent.h"
 #include "RigidBodyComponent.h"
-#include "CollisionsManager.h"
+#include "CollisionsDetector.h"
+#include "MovementSystem.h"
+#include "LifeSystem.h"
+#include "SpawnSystem.h"
 #include "TransformComponent.h"
-#include "MovementComponent.h"
 #include <iostream>
 #include "SpawnZone.h"
+#include "EventManager.h"
+#include "StartReplayEvent.h"
 
 EntityManager::EntityManager(Game* game)
 {
 	_game = game;
 
-	_collisionsManager = new CollisionsManager();
+	_collisionsManager = new CollisionsDetector();
+	_movementSystem = new MovementSystem();
+	_lifeSystem = new LifeSystem();
+	_spawnSystem = new SpawnSystem();
 	
 	// Initialize Physics Engine
 	_physicsEngineSettings = new PhysicsEngineSettings();
@@ -26,6 +33,8 @@ EntityManager::EntityManager(Game* game)
 	_totalEntitiesToDate = 0;
 
 	_spawns = std::vector<SpawnZone*>();
+
+	EventManager::getInstance()->registerFor(this, "START_REP");
 }
 
 void EntityManager::addEntity(GameObject* entity)
@@ -183,4 +192,17 @@ void EntityManager::update(int deltaTime)
 	_collisionsManager->update(currentEntities, totalEntities);
 
 	// Update Textures
+}
+
+void EntityManager::onEvent(Event* e)
+{
+	if (e->getType() == "START_REP")
+	{
+		handleStartReplay(static_cast<StartReplayEvent*>(e));
+	}
+}
+
+void EntityManager::handleStartReplay(StartReplayEvent* e)
+{
+	overwriteEntities(e->entities);
 }

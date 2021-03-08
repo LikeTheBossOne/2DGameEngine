@@ -10,6 +10,7 @@ public:
 	RigidBodyComponent(GameObject* gameObject, PhysicsEngineSettings* physicsEngineSettings);
 	RigidBodyComponent(GameObject* gameObject, PhysicsEngineSettings* physicsEngineSettings, bool isStatic, bool ignoreCollisions,
 	                   bool useGravity, bool isSticky, bool canStickToSurface, bool isPushable, bool canPush);
+	RigidBodyComponent(const RigidBodyComponent& other, GameObject* gameObject, PhysicsEngineSettings* physicsEngineSettings);
 
 	void update(int deltaTime) override;
 	ComponentTypes getType() override { return ComponentTypes::RigidBodyComponent; };

@@ -7,7 +7,10 @@ class MovementComponent;
 class TransformComponent : public GenericComponent
 {
 public:
+	static bool scriptInitialized;
+
 	TransformComponent(GameObject* gameObject, Rect position, bool isVisible);
+	TransformComponent(const TransformComponent& other, GameObject* gameObject);
 
 	void update(int deltaTime) override;
 
@@ -18,7 +21,7 @@ public:
 	void setWidth(float width) { _position.setWidth(width); }
 	void setHeight(float height) { _position.setHeight(height); }
 	void setIsVisible(bool isVisible) { _isVisible = isVisible; }
-	
+
 	float getPositionX() { return _position.getX(); }
 	float getPositionY() { return _position.getY(); }
 	float getWidth() { return _position.getWidth(); }
@@ -33,5 +36,8 @@ private:
 
 	float _prevX;
 	float _prevY;
+
+	void setPrevX(float prevX) { _prevX = prevX; }
+	void setPrevY(float prevY) { _prevY = prevY; }
 };
 

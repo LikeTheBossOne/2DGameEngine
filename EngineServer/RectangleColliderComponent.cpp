@@ -15,6 +15,13 @@ RectangleColliderComponent::RectangleColliderComponent(GameObject* gameObject, f
 	_bounds = EngineRectangle(Rect(transform->getPositionX() + relativeLeft, transform->getPositionY() + relativeTop, width, height));
 }
 
+RectangleColliderComponent::RectangleColliderComponent(const RectangleColliderComponent& other, GameObject* gameObject) : GenericComponent(gameObject)
+{
+	_relativeLeftBounds = other._relativeLeftBounds;
+	_relativeTopBounds = other._relativeTopBounds;
+	_bounds = other._bounds;
+}
+
 
 void RectangleColliderComponent::update(int deltaTime)
 {

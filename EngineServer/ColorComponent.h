@@ -5,6 +5,7 @@ class ColorComponent : public GenericComponent
 {
 public:
 	ColorComponent(GameObject* gameObject, int r, int g, int b);
+	ColorComponent(const ColorComponent& other, GameObject* gameObject);
 
 	void update(int deltaTime) override;
 	ComponentTypes getType() override { return ComponentTypes::ColorComponent; }

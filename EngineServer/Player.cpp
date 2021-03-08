@@ -9,6 +9,7 @@
 #include "TextureComponent.h"
 #include "DieComponent.h"
 #include "SpawnZone.h"
+#include "SpawnableComponent.h"
 
 Player::Player(PhysicsEngineSettings* physSettings, float width, float height, std::string textureName, SpawnZone* spawn)
 {
@@ -35,5 +36,43 @@ Player::Player(PhysicsEngineSettings* physSettings, float width, float height, s
 	_components[ComponentTypes::TextureComponent] = new TextureComponent(this, textureName);
 
 	// Initialize Die Component
-	_components[ComponentTypes::DieComponent] = new DieComponent(this, true, spawn);
+	_components[ComponentTypes::DieComponent] = new DieComponent(this, true);
+
+	// Initialize Spawnable Component
+	_components[ComponentTypes::SpawnableComponent] = new SpawnableComponent(this, spawn);
+}
+
+Player::Player(const Player& other, PhysicsEngineSettings* physSettings, SpawnZone* spawn) : GameObject(other)
+{
+	_transform = new TransformComponent(*other._transform, this);
+
+	_rigidBody = new RigidBodyComponent(*other._rigidBody, this, physSettings);
+	
+	_components[ComponentTypes::RectangleColliderComponent] = new RectangleColliderComponent(
+		*static_cast<RectangleColliderComponent*>(other._components.at(ComponentTypes::RectangleColliderComponent)), this
+	);
+
+	_components[ComponentTypes::MovementComponent] = new MovementComponent(
+		*static_cast<MovementComponent*>(other._components.at(ComponentTypes::MovementComponent)), this
+	);
+
+	_components[ComponentTypes::PlayerInputComponent] = new PlayerInputComponent(
+		*static_cast<PlayerInputComponent*>(other._components.at(ComponentTypes::PlayerInputComponent)), this
+	);
+
+	_components[ComponentTypes::JumpComponent] = new JumpComponent(
+		*static_cast<JumpComponent*>(other._components.at(ComponentTypes::JumpComponent)), this
+	);
+
+	_components[ComponentTypes::TextureComponent] = new TextureComponent(
+		*static_cast<TextureComponent*>(other._components.at(ComponentTypes::TextureComponent)), this
+	);
+
+	_components[ComponentTypes::DieComponent] = new DieComponent(
+		*static_cast<DieComponent*>(other._components.at(ComponentTypes::DieComponent)), this
+	);
+
+	_components[ComponentTypes::SpawnableComponent] = new SpawnableComponent(
+		*static_cast<SpawnableComponent*>(other._components.at(ComponentTypes::SpawnableComponent)), this, spawn
+	);
 }

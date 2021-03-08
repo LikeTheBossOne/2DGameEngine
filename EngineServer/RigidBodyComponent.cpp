@@ -38,6 +38,22 @@ RigidBodyComponent::RigidBodyComponent(GameObject* gameObject, PhysicsEngineSett
 	_stuckToEntity = nullptr;
 }
 
+RigidBodyComponent::RigidBodyComponent(const RigidBodyComponent& other, GameObject* gameObject,
+	PhysicsEngineSettings* physicsEngineSettings) : GenericComponent(gameObject)
+{
+	_physicsEngineSettings = physicsEngineSettings;
+
+	_isStatic = other._isStatic;
+	_ignoreCollisions = other._ignoreCollisions;
+	_useGravity = other._useGravity;
+	_isStickySurface = other._isStickySurface;
+	_canStickToSurface = other._canStickToSurface;
+	_isPushable = other._isPushable;
+	_canPush = other._canPush;
+	_stuckToEntity = other._stuckToEntity;
+	
+}
+
 void RigidBodyComponent::update(int deltaTime)
 {
 	// Move transform by velocity of component it is stuck to

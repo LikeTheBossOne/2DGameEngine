@@ -4,6 +4,11 @@ SpawnComponent::SpawnComponent(GameObject* gameObject) : GenericComponent(gameOb
 {
 }
 
+SpawnComponent::SpawnComponent(const SpawnComponent& other, GameObject* gameObject) : GenericComponent(gameObject)
+{
+	
+}
+
 void SpawnComponent::update(int deltaTime)
 {
 }

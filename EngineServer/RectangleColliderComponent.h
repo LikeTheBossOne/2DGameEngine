@@ -9,6 +9,7 @@ class RectangleColliderComponent : public GenericComponent
 {
 public:
 	RectangleColliderComponent(GameObject* gameObject, float relativeLeft, float relativeTop, float width, float height);
+	RectangleColliderComponent(const RectangleColliderComponent& other, GameObject* gameObject);
 
 	void update(int deltaTime) override;
 	ComponentTypes getType() override { return ComponentTypes::RectangleColliderComponent; };
